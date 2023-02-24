@@ -5,13 +5,15 @@ import SelectTextField from "@/components/UI/SelectTextField";
 import useToggle from "hooks/useToggle";
 import AddBaseIngredient from "./AddBaseIngredient";
 import AddProductVariants from "./AddProductVariants";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
+import ComboBox from "@/components/UI/ComboBox";
 
 const AddProductCard = () => {
   const [showIngredientModal, toggleIngredientModal] = useToggle();
   const [showProductVarModal, toggleProductVarModal] = useToggle();
 
   const [productData, setProductData] = useState({
+    id: "",
     productName: "",
     category: "",
     productType: "",
@@ -31,7 +33,6 @@ const AddProductCard = () => {
     size: "",
     type: "",
     price: "",
-    ingredients: [],
     sinker: "",
   });
 
@@ -41,24 +42,22 @@ const AddProductCard = () => {
 
   const handleSubmitProduct = (e: FormEvent) => {
     e.preventDefault();
-    console.log(baseIngredientData);
-    setProductData((prev) => ({
-      ...prev,
-      baseIngredientData,
-      productVariantData,
-    }));
     console.log(productData);
   };
 
   return (
     <div>
       <form className="flex flex-col gap-4" onSubmit={handleSubmitProduct}>
-        <SelectTextField
+        <ComboBox
           onChange={(e) => handleChange("productName", e.target.value)}
-          onSelect={(e) => handleChange("productName", e)}
-          value={productData.productName}
+          objKey={"productName"}
+          value={productData}
           label="Product Name"
-          data={["pansit", "milktea", "cantnon"]}
+          data={[
+            { key: "1", id: "a", value: "Value A" },
+            { key: "2", id: "b", value: "Value B" },
+            { key: "3", id: "c", value: "Value C" },
+          ]}
           required={true}
           fullWidth={true}
         />
@@ -96,7 +95,7 @@ const AddProductCard = () => {
         <div className="grid grid-cols-2">
           <div className="flex flex-col items-center w-full">
             <p>Base Ingredient:</p>
-            {baseIngredientData && (
+            {baseIngredientData[0].ingredientName && (
               <ul className="border rounded-sm max-w-[10rem] overflow-hidden">
                 {baseIngredientData.map((ingredient) => {
                   return (
@@ -109,6 +108,7 @@ const AddProductCard = () => {
             )}
             <div>
               <Button
+                color="green"
                 fullWidth={false}
                 className="mt-2"
                 onClick={toggleIngredientModal}
@@ -120,7 +120,11 @@ const AddProductCard = () => {
           <div className="flex flex-col items-center w-full">
             <p>Product Variants</p>
             <div>
-              <Button className="mt-2" onClick={toggleProductVarModal}>
+              <Button
+                color="green"
+                className="mt-2"
+                onClick={toggleProductVarModal}
+              >
                 Add
               </Button>
             </div>

@@ -20,7 +20,7 @@ const AddBaseIngredient = ({
   const handleSubmitIngredient = (e: FormEvent) => {
     e.preventDefault();
     console.log(baseIngredientData);
-    // setProductData({ ...productData, baseIngredientData });
+    setProductData({ ...productData, baseIngredientData });
     toggleIngredientModal();
   };
 

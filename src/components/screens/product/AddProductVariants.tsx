@@ -20,9 +20,7 @@ const AddProductVariants = ({
 
   const handleSubmitProductVariant = (e: FormEvent) => {
     e.preventDefault();
-    console.log(productVariantData);
-    setProductVariantData((prev) => ({ ...prev, ingredients }));
-    // setProductData({ ...productData, productVariantData });
+    setProductData({ ...productData, productVariantData });
     toggleProductVarModal();
   };
 
@@ -64,7 +62,7 @@ const AddProductVariants = ({
         </div>
         <div className="flex flex-col items-center w-full">
           <p>Base Ingredient:</p>
-          {ingredients && (
+          {ingredients[0].ingredientName && (
             <ul className="border rounded-sm max-w-[10rem] overflow-hidden">
               {ingredients.map((ingredient) => {
                 return (
@@ -77,6 +75,7 @@ const AddProductVariants = ({
           )}
           <div>
             <Button
+              color="green"
               fullWidth={false}
               className="mt-2"
               onClick={toggleIngredientModal}
@@ -111,8 +110,8 @@ const AddProductVariants = ({
             toggleIngredientModal={toggleIngredientModal}
             baseIngredientData={ingredients}
             setBaseIngredientData={setIngredients}
-            productData={productData}
-            setProductData={setProductData}
+            productData={productVariantData}
+            setProductData={setProductVariantData}
           />
         </Modal>
       )}
