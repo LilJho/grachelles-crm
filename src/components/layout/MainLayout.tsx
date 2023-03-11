@@ -1,8 +1,6 @@
 import useToggle from "hooks/useToggle";
-import useStore from "lib/store/useStore";
 import React from "react";
 import Header from "./Header/Header";
-import OrdersList from "./OrdersList/OrdersList";
 import Sidebar from "./Sidebar";
 interface IMainLayoutProps {
   children: React.ReactNode;
@@ -10,14 +8,14 @@ interface IMainLayoutProps {
 
 const MainLayout = ({ children }: IMainLayoutProps) => {
   const [showSidebar, toggleSidebar] = useToggle();
-  const [showOrders, toggleOrders] = useToggle();
 
   return (
-    <div className={`text-gray-800`}>
-      <Header toggleSidebar={toggleSidebar} toggleOrder={toggleOrders} />
+    <div className={`text-gray-800 flex h-screen text-left align-middle`}>
       <Sidebar isOpen={showSidebar} toggle={toggleSidebar} />
-      <OrdersList isOpen={showOrders} toggle={toggleOrders} />
-      <div className="px-4 py-1">{children}</div>
+      <div className="flex-1 w-full">
+        <Header toggleSidebar={toggleSidebar} />
+        <div className="bg-gray-50 h-full p-6">{children}</div>
+      </div>
     </div>
   );
 };

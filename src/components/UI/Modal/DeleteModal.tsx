@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { RiLoader5Line, RiAlertFill } from "react-icons/ri";
-import Button from "../Button/Button";
+import Button from "../Buttons/Button";
 import Modal from "./Modal";
 
 type IDeleteModalProps = {

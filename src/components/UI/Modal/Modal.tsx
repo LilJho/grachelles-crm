@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment } from "react";
 import { HiX } from "react-icons/hi";
-import UnstyledButton from "../Button/UnstyledButton";
+import UnstyledButton from "../Buttons/UnstyledButton";
 
 interface IModalProps {
   isOpen: boolean;
@@ -38,7 +38,7 @@ const Modal: FC<IModalProps> = ({
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-full p-4 text-center md:px-9 md:py-8">
+          <div className="flex min-h-full items-center justify-center p-4 md:px-9 md:py-8 text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"

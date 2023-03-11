@@ -1,9 +1,9 @@
 import { FC, Fragment } from "react";
 import { HiCheck, HiSelector } from "react-icons/hi";
 import { Listbox, Transition } from "@headlessui/react";
-import Label from "./Label";
+import Label from "./Inputs/Label";
 import styled from "styled-components";
-import ErrorMessage from "./ErrorMessage";
+import ErrorMessage from "./Inputs/ErrorMessage";
 
 type ISelectFieldProps = {
   fullWidth?: boolean;

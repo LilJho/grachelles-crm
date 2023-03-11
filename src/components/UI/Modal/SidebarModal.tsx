@@ -1,8 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
-import Image from "next/image";
 import { Fragment } from "react";
 import { HiX } from "react-icons/hi";
-import UnstyledButton from "../Button/UnstyledButton";
+import UnstyledButton from "@/components/UI/Buttons/UnstyledButton";
 
 interface ISidebarProps {
   isOpen: boolean;
@@ -52,9 +51,9 @@ const SidebarModal = ({
               leaveTo="opacity-90"
             >
               <Dialog.Panel
-                className={`relative font-quicksand ${
+                className={`relative  ${
                   position === "left" ? "ml-0" : "ml-auto"
-                } flex flex-col ${width} max-w-[90%] transform bg-white px-4 py-6 text-left align-middle shadow-xl transition-all`}
+                } flex md:hidden flex-col ${width} max-w-[90%] transform bg-white px-4 py-6 text-left align-middle shadow-xl transition-all`}
               >
                 <UnstyledButton
                   className={`absolute z-10 top-1 ${

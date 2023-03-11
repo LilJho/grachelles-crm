@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import Label from "../Label";
+import Label from "../Inputs/Label";
 import CashierImg from "public/images/cashier.svg";
 import ChefImg from "public/images/chef.svg";
 import StockerImg from "public/images/stocker.svg";

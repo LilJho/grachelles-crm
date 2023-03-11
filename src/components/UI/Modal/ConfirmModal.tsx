@@ -1,43 +1,32 @@
-import React, { FC } from "react";
+import React from "react";
 import { RiLoader5Line } from "react-icons/ri";
-import Button from "../Button/Button";
+import Button from "../Buttons/Button";
 import Modal from "./Modal";
 
-interface IConfirmModalProps {
+type Props = {
   toggle: () => void;
   isOpen: boolean;
-  title?: string;
-  description?: any;
-  buttonText?: string;
-  onClick?: () => void;
-  isLoading?: boolean;
-}
+  title: string;
+  description: string;
+  buttonText: string;
+  onClick: () => void;
+  isLoading: boolean;
+};
 
-const ConfirmModal: FC<IConfirmModalProps> = ({
+const ConfirmModal = ({
   toggle = () => {},
   isOpen,
   title = "",
   description = "",
   buttonText = "",
-  onClick,
+  onClick = () => {},
   isLoading,
-}) => {
+}: Props) => {
   return (
-    <Modal
-      title={title}
-      toggle={toggle}
-      isOpen={isOpen}
-      className="max-w-screen-xs"
-    >
-      <p className="">{description}</p>
-      <div className="flex justify-between gap-4 mt-8">
-        <Button
-          size="sm"
-          variant="subtle"
-          color="red"
-          className="px-0.5"
-          onClick={toggle}
-        >
+    <Modal title={title} toggle={toggle} isOpen={isOpen} className="max-w-lg">
+      <p className="mt-4">{description}</p>
+      <div className="flex justify-end gap-4 mt-8">
+        <Button size="sm" color="gray" onClick={toggle}>
           Cancel
         </Button>
         <Button size="sm" onClick={onClick}>

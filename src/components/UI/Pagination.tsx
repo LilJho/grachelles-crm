@@ -1,18 +1,17 @@
-import React, { FC } from "react";
+import React from "react";
 import ReactPaginate from "react-paginate";
 
 interface IPaginationProps {
   pageCount: number;
   currentCount: number;
-  handlePageClick: (data: { selected: number }) => void;
+  handlePageClick: ({ selected }: { selected: number }) => void;
   pageNumber: number;
   total: number;
-  forcePage?: number;
+  forcePage: number;
   className?: string;
-  showEntries?: boolean;
 }
 
-const Pagination: FC<IPaginationProps> = ({
+const Pagination = ({
   pageCount,
   currentCount,
   handlePageClick,
@@ -20,25 +19,19 @@ const Pagination: FC<IPaginationProps> = ({
   total,
   forcePage,
   className = "",
-  showEntries = false,
-}) => {
+}: IPaginationProps) => {
   return (
     <div
-      className={`w-full flex items-center ${
-        showEntries ? "justify-between" : "justify-end"
-      } overflow-x-auto overflow-y-hidden ${className}`}
+      className={`w-full flex items-center justify-center md:justify-between overflow-x-auto overflow-y-hidden ${className}`}
     >
-      {showEntries && (
-        <span className="font-medium text-sm text-gray-400">{`Showing ${
-          pageNumber + 1
-        } to ${currentCount} of ${total} entries`}</span>
-      )}
-
+      <span className="font-medium hidden md:block text-sm text-gray-400">{`Showing ${
+        pageNumber + 1
+      } to ${currentCount} of ${total} entries`}</span>
       <ReactPaginate
         previousLabel={<span className="font-medium p-1.5">Prev</span>}
         nextLabel={<span className="font-medium p-1.5">Next</span>}
         pageCount={pageCount}
-        forcePage={forcePage}
+        forcePage={forcePage as number}
         marginPagesDisplayed={1}
         onPageChange={handlePageClick}
         containerClassName={"flex justify-center items-center gap-2 text-sm"}
