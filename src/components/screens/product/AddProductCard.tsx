@@ -8,6 +8,30 @@ import AddProductVariants from "./AddProductVariants";
 import { FormEvent, useState } from "react";
 import ComboBox from "@/components/UI/ComboBox";
 
+const product = [
+  {
+    id: "asdada",
+    productName: "spag",
+    category: "Pancit",
+    productType: "Hot",
+    branch: "Malvar",
+  },
+  {
+    id: "asddddd",
+    productName: "Signature Series",
+    category: "Milktea",
+    productType: "Cold",
+    branch: "Tiniguiban",
+  },
+  {
+    id: "asdasdas3",
+    productName: "Egg omelete",
+    category: "Breakfast",
+    productType: "hot",
+    branch: "Malvar",
+  },
+];
+
 const AddProductCard = () => {
   const [showIngredientModal, toggleIngredientModal] = useToggle();
   const [showProductVarModal, toggleProductVarModal] = useToggle();
@@ -29,6 +53,7 @@ const AddProductCard = () => {
   ]);
 
   const [productVariantData, setProductVariantData] = useState({
+    id: "",
     variantName: "",
     size: "",
     type: "",
@@ -49,15 +74,11 @@ const AddProductCard = () => {
     <div>
       <form className="flex flex-col gap-4" onSubmit={handleSubmitProduct}>
         <ComboBox
-          onChange={(e) => handleChange("productName", e.target.value)}
-          objKey={"productName"}
-          value={productData}
+          onChange={(value) => handleChange("productName", value.productName)}
+          value={productData.productName}
           label="Product Name"
-          data={[
-            { key: "1", id: "a", value: "Value A" },
-            { key: "2", id: "b", value: "Value B" },
-            { key: "3", id: "c", value: "Value C" },
-          ]}
+          objKey="productName"
+          data={product}
           required={true}
           fullWidth={true}
         />

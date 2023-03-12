@@ -14,7 +14,7 @@ const MainLayout = ({ children }: IMainLayoutProps) => {
       <Sidebar isOpen={showSidebar} toggle={toggleSidebar} />
       <div className="flex-1 w-full">
         <Header toggleSidebar={toggleSidebar} />
-        <div className="bg-gray-50 h-full p-6">{children}</div>
+        <div className="h-full p-6 bg-gray-50">{children}</div>
       </div>
     </div>
   );

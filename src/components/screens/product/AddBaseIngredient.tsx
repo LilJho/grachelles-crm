@@ -1,6 +1,6 @@
-import Button from "@/components/UI/Button/Button";
-import SelectTextField from "@/components/UI/SelectTextField";
-import TextField from "@/components/UI/TextField";
+import Button from "../../UI/Buttons/Button";
+import SelectTextField from "../../UI/SelectField";
+import TextField from "../../UI/Inputs/TextField";
 import { FormEvent, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 
@@ -11,7 +11,7 @@ const AddBaseIngredient = ({
   setProductData,
   toggleIngredientModal,
 }: any) => {
-  const handleChange = (index: any, key: string, value: string | number) => {
+  const handleChange = (index: number, key: string, value: string | number) => {
     let data = [...baseIngredientData];
     data[index][key] = value;
     setBaseIngredientData(data);
@@ -29,7 +29,7 @@ const AddBaseIngredient = ({
     setBaseIngredientData([...baseIngredientData, newField]);
   };
 
-  const removeField = (index) => {
+  const removeField = (index: number) => {
     let data = [...baseIngredientData];
     data.splice(index, 1);
     setBaseIngredientData(data);
@@ -37,7 +37,7 @@ const AddBaseIngredient = ({
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmitIngredient}>
-      {baseIngredientData.map((input, index) => {
+      {baseIngredientData.map((input, index: number) => {
         return (
           <div className="flex gap-4" key={index}>
             <SelectTextField
