@@ -9,17 +9,19 @@ import { RiLoader5Line } from "react-icons/ri";
 import TextField from "@/components/UI/Inputs/TextField";
 import PasswordField from "@/components/UI/Inputs/PasswordField";
 import Button from "@/components/UI/Buttons/Button";
-
+import { useRouter } from "next/router";
 type Props = {};
 
 const LoginPage = (props: Props) => {
+  const router = useRouter();
   const { data, error, login } = useAuthStore();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = useMutation(async (e: FormEvent) => {
     e.preventDefault();
-    login(userName, password);
+    // login(userName, password);
+    router.push("/");
   });
 
   return (

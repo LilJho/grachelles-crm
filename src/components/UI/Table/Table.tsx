@@ -6,7 +6,7 @@ import { PropagateLoader } from "react-spinners";
 
 interface ITableProps<T> {
   data?: T[];
-  header: string[];
+  header: string[] | any;
   query?: string | number;
   isLoading?: boolean;
 }
@@ -51,11 +51,11 @@ const DisplayTable = <T,>({
 }: ITableProps<T>) => {
   const columns = Object.keys(Object(data[0]) || []);
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto bg-white">
       <table className="min-w-full divide-y-2 divide-neutral-200 text-sm">
         <thead>
           <tr>
-            {header?.map((column, idx) => (
+            {header?.map((column: string, idx: number) => (
               <TableHead key={idx}>{column}</TableHead>
             ))}
           </tr>
@@ -112,12 +112,14 @@ const DisplayTable = <T,>({
 const CustomTable = <T,>({
   header,
   children,
-  data,
-  query,
+  data = [],
+  query = "",
 }: ICustomTableProps<T>) => {
+  console.log(data?.length === 0);
+  // console.log(query !== "");
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y-2 divide-neutral-100/30 text-sm">
+    <div className="overflow-x-auto bg-white">
+      <table className="min-w-full divide-y-2 divide-neutral-200 text-sm">
         <thead>
           <tr>{header}</tr>
         </thead>
