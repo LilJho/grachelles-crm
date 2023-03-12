@@ -12,7 +12,7 @@ interface ISidebarProps {
 const Sidebar = ({ isOpen, toggle }: ISidebarProps) => {
   return (
     <>
-      <div className="hidden md:flex flex-col w-72 bg-white px-4 py-6">
+      <div className="hidden md:flex fixed top-0 bottom-0 left-0 flex-col w-72 bg-white px-4 py-6">
         <SidebarContent />
       </div>
       <SidebarModal toggle={toggle} isOpen={isOpen} width="w-[280px] md:w-80">

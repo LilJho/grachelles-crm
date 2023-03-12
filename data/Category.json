@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "category": "Milk Tea",
+    "image": "/images/grachelles.png"
+  },
+  {
+    "id": "2",
+    "category": "Fruit Tea",
+    "image": "/images/grachelles.png"
+  },
+  {
+    "id": "3",
+    "category": "Lemon Sensation",
+    "image": "/images/grachelles.png"
+  },
+  {
+    "id": "4",
+    "category": "Coffee",
+    "image": "/images/grachelles.png"
+  },
+  {
+    "id": "5",
+    "category": "Silog",
+    "image": "/images/grachelles.png"
+  },
+  {
+    "id": "6",
+    "category": "Sandwiches",
+    "image": "/images/grachelles.png"
+  },
+  {
+    "id": "7",
+    "category": "Pasta",
+    "image": "/images/grachelles.png"
+  },
+  {
+    "id": "8",
+    "category": "Liquors",
+    "image": "/images/grachelles.png"
+  },
+  {
+    "id": "9",
+    "category": "Bulalo Fiesta",
+    "image": "/images/grachelles.png"
+  }
+]

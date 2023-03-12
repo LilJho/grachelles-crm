@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1",
+    "category": "Classic Series",
+    "image": "/images/grachelles.png"
+  },
+  {
+    "id": "2",
+    "category": "Cheesecake Series",
+    "image": "/images/grachelles.png"
+  },
+  {
+    "id": "3",
+    "category": "Signature Series",
+    "image": "/images/grachelles.png"
+  }
+]
