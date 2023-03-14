@@ -1,6 +1,6 @@
-import SelectTextField from "@/components/UI/SelectTextField";
-import TextField from "@/components/UI/TextField";
-import Button from "@/components/UI/Button/Button";
+import SelectField from "@/components/UI/SelectField";
+import TextField from "@/components/UI/Inputs/TextField";
+import Button from "@/components/UI/Buttons/Button";
 import { FormEvent, useState } from "react";
 import Modal from "@/components/UI/Modal/Modal";
 import AddBaseIngredient from "./AddBaseIngredient";
@@ -84,9 +84,8 @@ const AddProductVariants = ({
             </Button>
           </div>
         </div>
-        <SelectTextField
-          onChange={(e) => handleChange("sinker", e.target.value)}
-          onSelect={(e) => handleChange("sinker", e)}
+        <SelectField
+          onChange={(value) => handleChange("sinker", value)}
           value={productVariantData.sinker}
           label="Sinkers"
           data={["straw", "cup", "milk powder"]}

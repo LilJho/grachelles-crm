@@ -1,12 +1,11 @@
-import Button from "@/components/UI/Button/Button";
-import UnstyledButton from "@/components/UI/Button/UnstyledButton";
-import Modal from "@/components/UI/Modal/Modal";
-import SelectTextField from "@/components/UI/SelectTextField";
+import Button from "@/components/UI/Buttons/Button";
 import useToggle from "hooks/useToggle";
+import Modal from "@/components/UI/Modal/Modal";
+import TextField from "@/components/UI/Inputs/TextField";
 import AddBaseIngredient from "./AddBaseIngredient";
 import AddProductVariants from "./AddProductVariants";
 import { FormEvent, useState } from "react";
-import ComboBox from "@/components/UI/ComboBox";
+import SelectField from "@/components/UI/SelectField";
 
 const product = [
   {
@@ -32,7 +31,7 @@ const product = [
   },
 ];
 
-const AddProductCard = () => {
+const AddProductCard = ({ toggleProductModal }) => {
   const [showIngredientModal, toggleIngredientModal] = useToggle();
   const [showProductVarModal, toggleProductVarModal] = useToggle();
 
@@ -73,48 +72,43 @@ const AddProductCard = () => {
   return (
     <div>
       <form className="flex flex-col gap-4" onSubmit={handleSubmitProduct}>
-        <ComboBox
-          onChange={(value) => handleChange("productName", value.productName)}
+        <TextField
+          placeholder="Enter product name..."
+          onChange={(e) => handleChange("productName", e.target.value)}
           value={productData.productName}
           label="Product Name"
-          objKey="productName"
-          data={product}
           required={true}
           fullWidth={true}
         />
-        <div className="flex justify-between">
-          <SelectTextField
-            onChange={(e) => handleChange("category", e.target.value)}
-            onSelect={(e) => handleChange("category", e)}
+        <div className="flex justify-between gap-2">
+          <SelectField
+            onChange={(value) => handleChange("category", value)}
             value={productData.category}
             label="Category"
             data={["Coffee", "Milktea"]}
             required={true}
-            fullWidth={false}
+            fullWidth={true}
           />
-          <SelectTextField
-            onChange={(e) => handleChange("productType", e.target.value)}
-            onSelect={(e) => handleChange("productType", e)}
+          <SelectField
+            onChange={(value) => handleChange("productType", value)}
             value={productData.productType}
             label="Product Type"
             data={["Food", "Drink", "Appetizer"]}
             required={true}
-            fullWidth={false}
+            fullWidth={true}
+          />
+          <SelectField
+            onChange={(value) => handleChange("branch", value)}
+            value={productData.branch}
+            label="Branch"
+            data={["Malvar", "Tiniguiban"]}
+            required={true}
+            fullWidth={true}
           />
         </div>
 
-        <SelectTextField
-          onChange={(e) => handleChange("branch", e.target.value)}
-          onSelect={(e) => handleChange("branch", e)}
-          value={productData.branch}
-          label="Branch"
-          data={["Malvar", "Tiniguiban"]}
-          required={true}
-          fullWidth={true}
-        />
-
-        <div className="grid grid-cols-2">
-          <div className="flex flex-col items-center w-full">
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col w-full">
             <p>Base Ingredient:</p>
             {baseIngredientData[0].ingredientName && (
               <ul className="border rounded-sm max-w-[10rem] overflow-hidden">
@@ -138,7 +132,7 @@ const AddProductCard = () => {
               </Button>
             </div>
           </div>
-          <div className="flex flex-col items-center w-full">
+          <div className="flex flex-col w-full">
             <p>Product Variants</p>
             <div>
               <Button
@@ -153,7 +147,7 @@ const AddProductCard = () => {
         </div>
 
         <div className="flex justify-end gap-4 mt-10">
-          <Button color="blue" type="submit">
+          <Button color="blue" type="submit" onClick={toggleProductModal}>
             Save
           </Button>
         </div>

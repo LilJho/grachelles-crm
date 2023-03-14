@@ -1,5 +1,5 @@
 import Button from "../../UI/Buttons/Button";
-import SelectTextField from "../../UI/SelectField";
+import SelectField from "@/components/UI/SelectField";
 import TextField from "../../UI/Inputs/TextField";
 import { FormEvent, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -36,36 +36,38 @@ const AddBaseIngredient = ({
   };
 
   return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmitIngredient}>
+    <form
+      className="flex flex-col w-full gap-4"
+      onSubmit={handleSubmitIngredient}
+    >
       {baseIngredientData.map((input, index: number) => {
         return (
-          <div className="flex gap-4" key={index}>
-            <SelectTextField
-              onChange={(e) =>
-                handleChange(index, "ingredientName", e.target.value)
-              }
-              onSelect={(e) => handleChange(index, "ingredientName", e)}
+          <div className="flex justify-between w-full gap-2" key={index}>
+            <SelectField
+              onChange={(value) => handleChange(index, "ingredientName", value)}
               value={input.ingredientName}
               label="Name of Ingredient"
               data={["straw", "cup", "milk powder"]}
               required={true}
               fullWidth={true}
             />
+            <SelectField
+              onChange={(value) => handleChange(index, "stock", value)}
+              value={input.stock}
+              label="Stock"
+              required={true}
+              data={["straw", "cup", "milk powder"]}
+              fullWidth={true}
+            />
+
             <TextField
               onChange={(e) => handleChange(index, "quantity", e.target.value)}
               value={input.quantity}
               label="Quantity"
               required={true}
+              className="max-w-[4rem]"
             ></TextField>
-            <SelectTextField
-              onChange={(e) => handleChange(index, "stock", e.target.value)}
-              onSelect={(e) => handleChange(index, "stock", e)}
-              value={input.stock}
-              label="Stock"
-              required={true}
-              data={["straw", "cup", "milk powder"]}
-            />
-            <div className="flex items-end">
+            <div className="flex items-end gap-2 ">
               <Button
                 icon={<AiOutlineDelete />}
                 size="sm"
@@ -78,7 +80,7 @@ const AddBaseIngredient = ({
           </div>
         );
       })}
-      <Button color="green" fullWidth={true} onClick={addFields}>
+      <Button color="green" onClick={addFields}>
         Add more
       </Button>
       <div className="flex justify-end gap-4 mt-10">
