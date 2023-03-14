@@ -7,41 +7,53 @@ import Table, {
   TableHead,
   TableRow,
 } from "@/components/UI/Table/Table";
+import UnstyledButton from "@/components/UI/Buttons/UnstyledButton";
+import Modal from "@/components/UI/Modal/Modal";
+import useToggle from "hooks/useToggle";
+import AddProductCard from "@/components/screens/product/AddProductCard";
+
+interface BranchCategory {
+  branch: {};
+  category: {};
+}
+
+interface Product {
+  id: number;
+  parent_name: string;
+  category: {};
+  product_type: string;
+  branch: {};
+  expand: BranchCategory[];
+}
 
 const ProductsPage = () => {
-  const { data, isLoading } = useFetchData({
+  const { data, isLoading } = useFetchData<Product>({
     collectionName: Collections.Products,
+    expand: "category, branch",
   });
 
-  if (isLoading) {
-    return "Pakyu";
-  }
-  console.log(data);
+  const [showProductModal, toggleProductModal] = useToggle();
 
-  // const data = [
-  //   {
-  //     productName: "Chicken Fillet",
-  //     category: "Main Dishes",
-  //     productType: "Food",
-  //     Branch: "Tiniguiban",
-  //   },
-  //   {
-  //     productName: "Jinro Soju",
-  //     category: "Liquors",
-  //     productType: "Drink",
-  //     Branch: "Tiniguiban",
-  //   },
-  //   {
-  //     productName: "Classic Hotdog Fries",
-  //     category: "Sandwiches",
-  //     productType: "Food",
-  //     Branch: "Tiniguiban",
-  //   },
-  // ];
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center w-screen h-screen">
+        <h1 className="text-6xl">PAKYO</h1>
+      </div>
+    );
+  }
 
   return (
     <MainLayout>
-      <div className="w-full p-4 bg-gray-300 rounded-xl">
+      <div className="w-full p-4 bg-white border border-gray-500 rounded-xl">
+        <div className="flex justify-between">
+          <p>Products</p>
+          <UnstyledButton
+            className="p-4 bg-blue-300"
+            onClick={toggleProductModal}
+          >
+            Add Product
+          </UnstyledButton>
+        </div>
         <Table
           header={
             <>
@@ -55,13 +67,22 @@ const ProductsPage = () => {
           {data?.map((product) => (
             <TableRow key={product.id}>
               <TableColumn>{product.parent_name}</TableColumn>
-              <TableColumn>{product.category}</TableColumn>
+              <TableColumn>{product.expand.category.name}</TableColumn>
               <TableColumn>{product.product_type}</TableColumn>
-              <TableColumn>{product.branch}</TableColumn>
+              <TableColumn>{product.expand.branch.name}</TableColumn>
             </TableRow>
           ))}
         </Table>
       </div>
+      {showProductModal && (
+        <Modal
+          isOpen={showProductModal}
+          toggle={toggleProductModal}
+          title={"Add New Product"}
+        >
+          <AddProductCard toggleProductModal={toggleProductModal} />
+        </Modal>
+      )}
     </MainLayout>
   );
 };
