@@ -24,7 +24,7 @@ const Pagination = ({
     <div
       className={`w-full flex items-center justify-center md:justify-between overflow-x-auto overflow-y-hidden ${className}`}
     >
-      <span className="font-medium hidden md:block text-sm text-gray-400">{`Showing ${
+      <span className="hidden text-sm font-medium text-gray-400 md:block">{`Showing ${
         pageNumber + 1
       } to ${currentCount} of ${total} entries`}</span>
       <ReactPaginate

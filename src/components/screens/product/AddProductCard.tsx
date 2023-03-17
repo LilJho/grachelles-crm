@@ -7,31 +7,7 @@ import AddProductVariants from "./AddProductVariants";
 import { FormEvent, useState } from "react";
 import SelectField from "@/components/UI/SelectField";
 
-const product = [
-  {
-    id: "asdada",
-    productName: "spag",
-    category: "Pancit",
-    productType: "Hot",
-    branch: "Malvar",
-  },
-  {
-    id: "asddddd",
-    productName: "Signature Series",
-    category: "Milktea",
-    productType: "Cold",
-    branch: "Tiniguiban",
-  },
-  {
-    id: "asdasdas3",
-    productName: "Egg omelete",
-    category: "Breakfast",
-    productType: "hot",
-    branch: "Malvar",
-  },
-];
-
-const AddProductCard = ({ toggleProductModal }) => {
+const AddProductCard = ({ toggleProductModal }: any) => {
   const [showIngredientModal, toggleIngredientModal] = useToggle();
   const [showProductVarModal, toggleProductVarModal] = useToggle();
 
@@ -67,6 +43,7 @@ const AddProductCard = ({ toggleProductModal }) => {
   const handleSubmitProduct = (e: FormEvent) => {
     e.preventDefault();
     console.log(productData);
+    toggleProductModal();
   };
 
   return (
@@ -147,7 +124,7 @@ const AddProductCard = ({ toggleProductModal }) => {
         </div>
 
         <div className="flex justify-end gap-4 mt-10">
-          <Button color="blue" type="submit" onClick={toggleProductModal}>
+          <Button color="blue" type="submit">
             Save
           </Button>
         </div>
