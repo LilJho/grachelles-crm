@@ -74,27 +74,27 @@ const AddProductCard = ({ toggleProductModal }: any) => {
           fullWidth={true}
         />
         <div className="flex justify-between gap-2">
-          <SelectField
-            onChange={(value) => handleChange("category", value)}
+          <TextField
+            placeholder="Enter Category"
+            onChange={(e) => handleChange("category", e.target.value)}
             value={productData.category}
             label="Category"
-            data={["Coffee", "Milktea"]}
             required={true}
             fullWidth={true}
           />
-          <SelectField
-            onChange={(value) => handleChange("productType", value)}
+          <TextField
+            placeholder="Enter Product Type"
+            onChange={(e) => handleChange("productType", e.target.value)}
             value={productData.productType}
             label="Product Type"
-            data={["Food", "Drink", "Appetizer"]}
             required={true}
             fullWidth={true}
           />
-          <SelectField
-            onChange={(value) => handleChange("branch", value)}
+          <TextField
+            placeholder="Enter Branchs"
+            onChange={(e) => handleChange("branch", e.target.value)}
             value={productData.branch}
             label="Branch"
-            data={["Malvar", "Tiniguiban"]}
             required={true}
             fullWidth={true}
           />

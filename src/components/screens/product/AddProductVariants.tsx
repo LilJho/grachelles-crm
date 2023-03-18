@@ -84,11 +84,10 @@ const AddProductVariants = ({
             </Button>
           </div>
         </div>
-        <SelectField
-          onChange={(value) => handleChange("sinker", value)}
+        <TextField
+          onChange={(e) => handleChange("sinker", e.target.value)}
           value={productVariantData.sinker}
           label="Sinkers"
-          data={["straw", "cup", "milk powder"]}
           required={true}
           fullWidth={true}
         />

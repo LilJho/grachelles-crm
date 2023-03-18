@@ -43,24 +43,27 @@ const AddBaseIngredient = ({
       {baseIngredientData.map((input, index: number) => {
         return (
           <div className="flex justify-between w-full gap-2" key={index}>
-            <SelectField
-              onChange={(value) => handleChange(index, "ingredientName", value)}
+            <TextField
+              placeholder="Enter name of ingredient"
+              onChange={(e) =>
+                handleChange(index, "ingredientName", e.target.value)
+              }
               value={input.ingredientName}
               label="Name of Ingredient"
-              data={["straw", "cup", "milk powder"]}
               required={true}
               fullWidth={true}
             />
-            <SelectField
-              onChange={(value) => handleChange(index, "stock", value)}
+            <TextField
+              placeholder="Enter stock"
+              onChange={(e) => handleChange(index, "stock", e.target.value)}
               value={input.stock}
               label="Stock"
               required={true}
-              data={["straw", "cup", "milk powder"]}
               fullWidth={true}
             />
 
             <TextField
+              placeholder="Enter quantity"
               onChange={(e) => handleChange(index, "quantity", e.target.value)}
               value={input.quantity}
               label="Quantity"
