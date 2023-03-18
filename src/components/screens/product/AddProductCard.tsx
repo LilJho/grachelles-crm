@@ -6,6 +6,7 @@ import AddBaseIngredient from "./AddBaseIngredient";
 import AddProductVariants from "./AddProductVariants";
 import { FormEvent, useState } from "react";
 import SelectField from "@/components/UI/SelectField";
+import { pb } from "lib/database/pocketbase";
 
 const AddProductCard = ({ toggleProductModal }: any) => {
   const [showIngredientModal, toggleIngredientModal] = useToggle();
@@ -40,10 +41,25 @@ const AddProductCard = ({ toggleProductModal }: any) => {
     setProductData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmitProduct = (e: FormEvent) => {
+  const handleSubmitProduct = async (e: FormEvent) => {
     e.preventDefault();
     console.log(productData);
     toggleProductModal();
+
+    const data = {
+      parent_name: productData.productName,
+      category: productData.category,
+      branch: productData.branch,
+      product_type: productData.productType,
+      base_ingredients: [baseIngredientData],
+      product_variants: [productVariantData],
+    };
+
+    try {
+      const record = await pb.collection("products").create(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -88,7 +104,7 @@ const AddProductCard = ({ toggleProductModal }: any) => {
           <div className="flex flex-col w-full">
             <p>Base Ingredient:</p>
             {baseIngredientData[0].ingredientName && (
-              <ul className="border rounded-sm max-w-[10rem] overflow-hidden">
+              <ul className="border rounded-sm min-w-[10rem] overflow-hidden">
                 {baseIngredientData.map((ingredient) => {
                   return (
                     <li>
