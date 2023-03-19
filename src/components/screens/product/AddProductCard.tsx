@@ -5,10 +5,12 @@ import TextField from "@/components/UI/Inputs/TextField";
 import AddBaseIngredient from "./AddBaseIngredient";
 import AddProductVariants from "./AddProductVariants";
 import { FormEvent, useState } from "react";
-import SelectField from "@/components/UI/SelectField";
 import { pb } from "lib/database/pocketbase";
+import useFetchData from "hooks/useFetchData";
+import { Collections } from "types/pocketbase-types";
+import ComboBox from "@/components/UI/ComboBox";
 
-const AddProductCard = ({ toggleProductModal }: any) => {
+const AddProductCard = ({ toggleProductModal }) => {
   const [showIngredientModal, toggleIngredientModal] = useToggle();
   const [showProductVarModal, toggleProductVarModal] = useToggle();
 
@@ -55,12 +57,30 @@ const AddProductCard = ({ toggleProductModal }: any) => {
       product_variants: [productVariantData],
     };
 
-    try {
-      const record = await pb.collection("products").create(data);
-    } catch (error) {
-      console.log(error);
-    }
+    const record = await pb.collection("products").create(data);
   };
+
+  const { data: categories, isLoading: categoriesIsLoading } = useFetchData({
+    collectionName: Collections.Categories,
+  });
+
+  const { data: branches, isLoading: branchIsLoading } = useFetchData({
+    collectionName: Collections.Branches,
+  });
+
+  const [category, setCategory] = useState({ id: "", name: "" });
+  const [branch, setBranch] = useState({ id: "", name: "" });
+
+  if (categoriesIsLoading) {
+    <h1>Wait</h1>;
+  }
+
+  function handleChangeCategory(selectedItem: any) {
+    setCategory({ id: selectedItem.id, name: selectedItem.name });
+  }
+  function handleChangeBranch(selectedItem: any) {
+    setBranch({ id: selectedItem.id, name: selectedItem.name });
+  }
 
   return (
     <div>
@@ -73,14 +93,15 @@ const AddProductCard = ({ toggleProductModal }: any) => {
           required={true}
           fullWidth={true}
         />
+
         <div className="flex justify-between gap-2">
-          <TextField
-            placeholder="Enter Category"
-            onChange={(e) => handleChange("category", e.target.value)}
-            value={productData.category}
-            label="Category"
-            required={true}
+          <ComboBox
+            data={categories}
             fullWidth={true}
+            objKey={"name"}
+            label={"Select Category"}
+            value={category}
+            onChange={handleChangeCategory}
           />
           <TextField
             placeholder="Enter Product Type"
@@ -90,13 +111,13 @@ const AddProductCard = ({ toggleProductModal }: any) => {
             required={true}
             fullWidth={true}
           />
-          <TextField
-            placeholder="Enter Branchs"
-            onChange={(e) => handleChange("branch", e.target.value)}
-            value={productData.branch}
-            label="Branch"
-            required={true}
+          <ComboBox
+            data={branches}
             fullWidth={true}
+            objKey={"name"}
+            label={"Select Branch"}
+            value={branch}
+            onChange={handleChangeBranch}
           />
         </div>
 

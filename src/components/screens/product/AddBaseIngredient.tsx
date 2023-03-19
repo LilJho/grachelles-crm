@@ -3,6 +3,9 @@ import SelectField from "@/components/UI/SelectField";
 import TextField from "../../UI/Inputs/TextField";
 import { FormEvent, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
+import useFetchData from "hooks/useFetchData";
+import { Collections } from "types/pocketbase-types";
+import ComboBox from "@/components/UI/ComboBox";
 
 const AddBaseIngredient = ({
   baseIngredientData,
@@ -35,6 +38,20 @@ const AddBaseIngredient = ({
     setBaseIngredientData(data);
   };
 
+  const { data: stocks, isLoading: stocksIsLoading } = useFetchData({
+    collectionName: Collections.Stocks,
+  });
+  const [stock, setStock] = useState({});
+
+  if (stocksIsLoading) {
+    return <h1>Stock is Loading</h1>;
+  }
+
+  function handleChangeStock(selectedItem: any) {
+    setStock({ id: selectedItem.id, name: selectedItem.name });
+    console.log(stock);
+  }
+
   return (
     <form
       className="flex flex-col w-full gap-4"
@@ -43,23 +60,13 @@ const AddBaseIngredient = ({
       {baseIngredientData.map((input, index: number) => {
         return (
           <div className="flex justify-between w-full gap-2" key={index}>
-            <TextField
-              placeholder="Enter name of ingredient"
-              onChange={(e) =>
-                handleChange(index, "ingredientName", e.target.value)
-              }
-              value={input.ingredientName}
-              label="Name of Ingredient"
-              required={true}
+            <ComboBox
+              data={stocks}
               fullWidth={true}
-            />
-            <TextField
-              placeholder="Enter stock"
-              onChange={(e) => handleChange(index, "stock", e.target.value)}
-              value={input.stock}
-              label="Stock"
-              required={true}
-              fullWidth={true}
+              objKey={"name"}
+              label={"Select Ingredient"}
+              value={stock}
+              onChange={handleChangeStock}
             />
 
             <TextField
@@ -68,7 +75,7 @@ const AddBaseIngredient = ({
               value={input.quantity}
               label="Quantity"
               required={true}
-              className="max-w-[4rem]"
+              className="max-w-[20rem]"
             ></TextField>
             <div className="flex items-end gap-2 ">
               <Button

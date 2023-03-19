@@ -1,32 +1,7 @@
-import useFetchData from "hooks/useFetchData";
-import { Collections } from "types/pocketbase-types";
 import UnstyledButton from "@/components/UI/Buttons/UnstyledButton";
 import DataTable from "./DataTable";
 
-interface Product {
-  id: number;
-  parent_name: string;
-  category: {};
-  product_type: string;
-  branch: {};
-  expand: BranchCategory;
-}
-
-interface BranchCategory {
-  branch: {
-    name: string;
-  };
-  category: {
-    name: string;
-  };
-}
-
-const DataList = ({ toggleProductModal }: any) => {
-  const { data, isLoading } = useFetchData<Product>({
-    collectionName: Collections.Products,
-    expand: "category, branch",
-  });
-
+const DataList = ({ toggleProductModal, data, isLoading }) => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center w-screen h-screen">

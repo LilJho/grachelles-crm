@@ -1,6 +1,9 @@
 import { OrderItemsRecord, AddOnsRecordExtend } from "types/pocketbase-types";
 
 export interface IStoreProps {
+  data: {};
+  setData: (data: any) => void;
+
   order: OrderItemsRecord[];
   setOrder: (order: OrderItemsRecord[]) => void;
 

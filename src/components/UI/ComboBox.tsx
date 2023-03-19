@@ -62,7 +62,7 @@ const ComboBox: FC<IComboBoxProps> = ({
             />
             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
               <HiSelector
-                className="h-5 w-5 text-gray-400"
+                className="w-5 h-5 text-gray-400"
                 aria-hidden="true"
               />
             </Combobox.Button>
@@ -80,7 +80,7 @@ const ComboBox: FC<IComboBoxProps> = ({
               } overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
             >
               {filteredData.length === 0 && query !== "" ? (
-                <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
+                <div className="relative px-4 py-2 text-gray-700 cursor-default select-none">
                   Nothing found.
                 </div>
               ) : (
@@ -109,7 +109,7 @@ const ComboBox: FC<IComboBoxProps> = ({
                         </span>
                         {selected ? (
                           <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-primary-600">
-                            <HiCheck className="h-5 w-5" aria-hidden="true" />
+                            <HiCheck className="w-5 h-5" aria-hidden="true" />
                           </span>
                         ) : null}
                       </>
