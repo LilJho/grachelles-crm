@@ -20,6 +20,7 @@ interface ITextFieldProps {
   readOnly?: boolean;
   className?: string;
   description?: string;
+  name?: string;
 }
 
 const TextField: FC<ITextFieldProps> = ({
@@ -39,6 +40,7 @@ const TextField: FC<ITextFieldProps> = ({
   readOnly = false,
   className = "",
   description = "",
+  name = "",
 }) => {
   return (
     <div
@@ -65,6 +67,7 @@ const TextField: FC<ITextFieldProps> = ({
         <InputStyled
           className={`flex-1 bg-white w-full focus:outline-none 
       `}
+          name={name}
           placeholder={placeholder}
           type={type}
           value={value}
