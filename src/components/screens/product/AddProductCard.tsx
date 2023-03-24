@@ -53,11 +53,13 @@ const AddProductCard = ({ toggleProductModal }) => {
       category: productData.category,
       branch: productData.branch,
       product_type: productData.productType,
-      base_ingredients: [baseIngredientData],
+      base_ingredients: baseIngredientData,
       product_variants: [productVariantData],
     };
 
-    const record = await pb.collection("products").create(data);
+    console.log(baseIngredientData);
+
+    // const record = await pb.collection("products").create(data);
   };
 
   const { data: categories, isLoading: categoriesIsLoading } = useFetchData({
@@ -124,17 +126,6 @@ const AddProductCard = ({ toggleProductModal }) => {
         <div className="flex flex-col gap-5">
           <div className="flex flex-col w-full">
             <p>Base Ingredient:</p>
-            {baseIngredientData[0].ingredientName && (
-              <ul className="border rounded-sm min-w-[10rem] overflow-hidden">
-                {baseIngredientData.map((ingredient) => {
-                  return (
-                    <li>
-                      {ingredient.ingredientName}-{ingredient.quantity}
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
             <div>
               <Button
                 color="green"

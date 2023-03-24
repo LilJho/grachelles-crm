@@ -56,7 +56,7 @@ const TextField: FC<ITextFieldProps> = ({
         } focus-within:border-primary-600 ${TextFieldSize(size)}`}
       >
         {leftIcon !== "" && (
-          <div className="z-20 left-5 cursor-pointer">
+          <div className="z-20 cursor-pointer left-5">
             <span className={`${IconSize(size)}  text-gray-400`}>
               {leftIcon}
             </span>
@@ -73,7 +73,7 @@ const TextField: FC<ITextFieldProps> = ({
           readOnly={readOnly}
         />
         {rightIcon !== "" && (
-          <div className="z-20 right-5 cursor-pointer">
+          <div className="z-20 cursor-pointer right-5">
             <span className={`${IconSize(size)} text-gray-400`}>
               {rightIcon}
             </span>
