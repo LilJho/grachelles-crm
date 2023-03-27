@@ -54,7 +54,7 @@ const TextRadioInput = ({
                     />
                   </svg>
 
-                  <p className="text-gray-700">{val}</p>
+                  <p className="text-gray-700 capitalize">{val}</p>
                 </div>
               </label>
             </div>
