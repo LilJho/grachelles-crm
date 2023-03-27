@@ -13,6 +13,7 @@ interface ISummaryProps {
     totalCashOnHand: number;
     totalSales: number;
     totalIncome: number;
+    totalExpenses: number;
   };
 }
 
@@ -73,6 +74,12 @@ const Summaries = ({ data }: ISummaryProps) => {
         description="Total Sales"
         total={`₱ ${data.totalSales.toFixed(2)}`}
         name="totalSales"
+      />
+      <Card
+        title="Total Expenses"
+        description="Total Expenses"
+        total={`₱ ${data.totalExpenses.toFixed(2)}`}
+        name="totalExpenses"
       />
       <Card
         title="Total Income"
