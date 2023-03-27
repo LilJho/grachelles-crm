@@ -7,6 +7,7 @@ type ISearchFieldProps = {
   value: string;
   size?: "default" | "sm" | "lg";
   className?: string;
+  fullWidth?: boolean;
 };
 
 const SearchField: FC<ISearchFieldProps> = ({
@@ -15,9 +16,14 @@ const SearchField: FC<ISearchFieldProps> = ({
   value,
   size,
   className = "",
+  fullWidth = false,
 }) => {
   return (
-    <div className={`flex relative items-center ${className}`}>
+    <div
+      className={`flex relative items-center ${className} ${
+        fullWidth && "w-full"
+      }`}
+    >
       <div className={`z-10 absolute cursor-pointer ${TextIcon(size)}`}>
         <RiSearchLine />
       </div>

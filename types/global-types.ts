@@ -1,22 +1,20 @@
-import { OrderItemsRecord, AddOnsRecordExtend } from "types/pocketbase-types";
+import {
+  OrderItemsRecord,
+  AddOnsRecordExtend,
+  StocksResponse,
+} from "types/pocketbase-types";
 
-export interface IStoreProps {
-  data: {};
-  setData: (data: any) => void;
+export interface IStoreProps {}
 
-  order: OrderItemsRecord[];
-  setOrder: (order: OrderItemsRecord[]) => void;
-
-  addOnsList: AddOnsRecordExtend[];
-  setAddOnsList: (addOnsList: AddOnsRecordExtend[]) => void;
-
-  allIngredients: string[];
-  setAllIngredients: (index: string[]) => void;
+export interface IInventoryProps {
+  data: IExpandedStocksResponse[];
+  isLoading: boolean;
 }
 
-export interface PendingPaymentData {
-  id: string;
-  timeStamp: string;
-  orders: OrderItemsRecord[];
-  addOns: AddOnsRecordExtend[];
+export interface IExpandedStocksResponse extends StocksResponse {
+  expand: {
+    branch: {
+      name: string;
+    };
+  };
 }

@@ -1,17 +1,17 @@
 import React from "react";
 import Label from "../Inputs/Label";
 
-const RadioTextCheck = ({
+const TextRadioInput = ({
   className,
   size,
   fullWidth,
   options = ["Any", "None"],
-  label,
+  label = "",
   value,
   onChange,
 }: any) => {
   let option_name = label;
-  option_name = option_name.replace(/\s/g, "");
+  option_name = option_name?.replace(/\s/g, "");
 
   return (
     <fieldset
@@ -65,7 +65,7 @@ const RadioTextCheck = ({
   );
 };
 
-export default RadioTextCheck;
+export default TextRadioInput;
 
 const TextSize = (size = "default") =>
   ({

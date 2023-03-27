@@ -32,6 +32,26 @@ input:-webkit-autofill:focus {
   box-shadow: 0 0 0 1000px white inset !important;
 }
 
+.custom-input {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  appearance: none;
+  margin: 0;
+}
+
+.custom-input[type="date"]::-webkit-calendar-picker-indicator {
+  color: transparent;
+  background: none;
+  z-index: 1;
+}
+
+.custom-input:-webkit-autofill,
+.custom-input:-webkit-autofill:hover,
+.custom-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  box-shadow: 0 0 0 1000px white inset !important;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
   height: 8px;

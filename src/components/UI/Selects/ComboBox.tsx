@@ -1,8 +1,7 @@
 import { FC, Fragment, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { HiCheck, HiSelector } from "react-icons/hi";
-import Label from "./Inputs/Label";
-import styled from "styled-components";
+import Label from "../Inputs/Label";
 
 type IComboBoxProps = {
   fullWidth?: boolean;
@@ -46,9 +45,8 @@ const ComboBox: FC<IComboBoxProps> = ({
       <Label required={required}>{label}</Label>
       <Combobox value={value} onChange={onChange}>
         <div className="relative">
-          <SelectBox
-            minWidth={getWidth}
-            fullWidth={fullWidth}
+          <div
+            style={{ minWidth: fullWidth ? getWidth : "" }}
             className={`relative ${
               fullWidth && "w-full"
             } cursor-default bg-white text-left border border-gray-300 focus:border-primary-600 focus:outline-none  ${SelectSize(
@@ -62,11 +60,11 @@ const ComboBox: FC<IComboBoxProps> = ({
             />
             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
               <HiSelector
-                className="w-5 h-5 text-gray-400"
+                className="h-5 w-5 text-gray-400"
                 aria-hidden="true"
               />
             </Combobox.Button>
-          </SelectBox>
+          </div>
           <Transition
             as={Fragment}
             leave="transition ease-in duration-100"
@@ -80,7 +78,7 @@ const ComboBox: FC<IComboBoxProps> = ({
               } overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
             >
               {filteredData.length === 0 && query !== "" ? (
-                <div className="relative px-4 py-2 text-gray-700 cursor-default select-none">
+                <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                   Nothing found.
                 </div>
               ) : (
@@ -109,7 +107,7 @@ const ComboBox: FC<IComboBoxProps> = ({
                         </span>
                         {selected ? (
                           <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-primary-600">
-                            <HiCheck className="w-5 h-5" aria-hidden="true" />
+                            <HiCheck className="h-5 w-5" aria-hidden="true" />
                           </span>
                         ) : null}
                       </>
@@ -147,15 +145,6 @@ const OptionSize = (size = "default") =>
     sm: "py-1.5 pl-10 pr-4",
     lg: "py-2 pl-10 pr-4",
   }[size]);
-
-interface SelectBoxProps {
-  fullWidth?: boolean;
-  minWidth?: number;
-}
-
-const SelectBox = styled.div<SelectBoxProps>`
-  width: ${(props) => (props.fullWidth ? "100%" : `${props.minWidth}rem`)};
-`;
 
 const setWidthBasedOnLength = (array: any[], objKey = "") => {
   let longestWord = "";

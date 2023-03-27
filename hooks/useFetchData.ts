@@ -11,6 +11,7 @@ interface UseFetchDataProps<T> {
     cacheTime?: number;
   };
   filter?: string;
+  enabled?: boolean;
 }
 
 const useFetchData = <T>({
