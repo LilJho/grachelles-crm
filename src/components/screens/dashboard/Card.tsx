@@ -9,18 +9,18 @@ type Props = {
 
 const Card = ({ title, description, total, name }: Props) => {
   const Colors: any = {
-    drinks: "bg-[#D0924B]",
-    food: "bg-[#DCC9D0]",
-    drinkANDfood: "bg-[#9F555C]",
-    delivery: "bg-[#3F5871]",
-    claims: "bg-[#554D60]",
-    giveaways: "bg-[#5B6B6E]",
-    totalGiveaways: "bg-[#533C5E]",
-    totalExpenses: "bg-[#E39679]",
-    onlinePayment: "bg-[#F7B844]",
-    cash: "bg-[#f47c2c]",
-    totalSales: "bg-[#2eba30]",
-    totalIncome: "bg-[#2f97d2]",
+    totalDrinks: "bg-[#FF5733]", // Orange red
+    totalFood: "bg-[#FF8C00]", // Dark orange
+    totalDrinksAndFood: "bg-[#E25822]", // Dark tangerine
+    totalDeliveryFee: "bg-[#1976D2]", // Blue
+    totalGiveaways: "bg-[#4CAF50]", // Green
+    totalCashOnline: "bg-[#9C27B0]", // Purple
+    totalCashFoodPanda: "bg-[#FFC107]", // Amber
+    totalCashOnHand: "bg-[#795548]", // Brown
+    totalSales: "bg-[#00C853]", // Green
+    totalIncome: "bg-[#FF5722]", // Deep orange
+    // totalSales: "bg-[#2eba30]",
+    // totalIncome: "bg-[#2f97d2]",
   };
 
   return (
@@ -30,7 +30,7 @@ const Card = ({ title, description, total, name }: Props) => {
       <h2 className="text-lg lg:text-xl font-medium lg:font-bold">{title}</h2>
       <span className="text-xs lg:text-sm mb-3 lg:mb-0">{description}</span>
       <h1 className="text-xl lg:text-2xl font-semibold lg:font-bold mt-auto lg:mt-4">
-        {total[name]}
+        {total}
       </h1>
     </div>
   );

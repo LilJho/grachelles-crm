@@ -1,14 +1,45 @@
-{
-  "StocksType": [
-    "powder",
-    "syrup",
-    "basic",
-    "tea",
-    "milk tea",
-    "sandwiches",
-    "fruit tea",
-    "coffee",
-    "lemon sensation",
-    "fries"
-  ]
-}
+[
+  {
+    "all_ingredients_id": [
+      "5ff475nk0jtk70e",
+      "9q80rm9yjny515c",
+      "tyiqqsz2qkcpyne",
+      "96rx79btveht81r",
+      "d0iu4stjgp03ta1",
+      "8ukb7xbnd8548r6",
+      "3kc9r1645467jj8",
+      "dksmy8kpfywxwyb",
+      "ey1wxyksomrx5to",
+      "j6jlzg66nfz69yg",
+      "oie1jurun3rwtox",
+      "wrngifsw6qp0khk",
+      "zzgnmluqk9s08hj",
+      "n077w06vcg9o6kv",
+      "cz2pxmcox3i2j0l",
+      "h7pffy1590ze0ce",
+      "9l7ekh8o8dsn9g9",
+      "eauqw6zwvse1tqm",
+      "nrd006t5qir3lw3",
+      "bc74tuhu2nl98nx"
+    ],
+    "branch": "l2v7z32q687oozs",
+    "collectionId": "1wlg8cyldmgw9qa",
+    "collectionName": "orders",
+    "created": "2023-03-27 08:09:09.396Z",
+    "delivery_fee": 0,
+    "discount": 0,
+    "discount_for": "",
+    "expand": {},
+    "id": "oqf6wh0cj3ynuz5",
+    "is_serve": false,
+    "order_items": ["hpu8ru4rxr0s7ms"],
+    "payment_method": "giveaway",
+    "service_method": "take-out",
+    "sub_total": 110,
+    "total_amount": 0,
+    "total_drinks_count": 1,
+    "total_food_count": 0,
+    "transactionTime": "2023-03-27 04:08 PM",
+    "updated": "2023-03-27 08:09:09.396Z"
+  }
+]
