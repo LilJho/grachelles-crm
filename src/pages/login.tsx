@@ -20,7 +20,7 @@ const LoginPage = (props: Props) => {
 
   const handleSubmit = useMutation(async (e: FormEvent) => {
     e.preventDefault();
-    // login(userName, password);
+    login(userName, password);
     router.push("/");
   });
 

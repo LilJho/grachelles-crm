@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import useAuthStore from "lib/store/useAuthStore";
 import { pb } from "lib/database/pocketbase";
 import { useState } from "react";
+import PrivatePage from "@/components/PageWrapper/PrivatePage";
+import { UsersRolesOptions } from "types/pocketbase-types";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [queryClient] = useState(() => new QueryClient());
@@ -25,9 +27,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/images/grachelles.png" />
       </Head>
-      <main>
-        <Component {...pageProps} />
-      </main>
+      <PrivatePage allowedRoles={[UsersRolesOptions.admin]}>
+        <main>
+          <Component {...pageProps} />
+        </main>
+      </PrivatePage>
       <ToastContainer />
     </QueryClientProvider>
   );
