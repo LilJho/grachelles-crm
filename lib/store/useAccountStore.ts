@@ -4,8 +4,7 @@ import { UsersRecord, UsersResponse } from "types/pocketbase-types";
 import { pb } from "lib/database/pocketbase";
 import { BaseRecord } from "types/BaseRecord";
 import { Branch } from "./useBranchStore";
-
-export interface AuthStoreData extends UsersRecord {}
+import { Employee } from "./useEmployeeStore";
 
 type AccountCreateData = {
   name: string;
@@ -36,6 +35,7 @@ interface Account extends BaseRecord {
   verified: boolean;
   expand: {
     branch?: Branch;
+    employee_data?: Employee;
   };
 }
 
