@@ -19,7 +19,7 @@ const Card = ({ title, description, total, name }: Props) => {
     totalCashOnHand: "bg-[#795548]", // Brown
     totalSales: "bg-[#00C853]", // Green
     totalIncome: "bg-[#FF5722]", // Deep orange
-    // totalSales: "bg-[#2eba30]",
+    totalExpenses: "bg-[#2f97d2]",
     // totalIncome: "bg-[#2f97d2]",
   };
 

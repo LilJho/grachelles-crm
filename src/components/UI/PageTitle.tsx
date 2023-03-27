@@ -17,8 +17,8 @@ const PageTitle = ({ title = "", children }: PageTitleProps) => {
   };
 
   return (
-    <div className="flex items-center justify-between">
-      <h2 className="text-2xl font-bold">
+    <div className="flex items-center justify-between mb-10">
+      <h2 className="text-3xl font-bold">
         {checkStringLength()[0] + " "}
         <span className="font-normal">{checkStringLength()[1]}</span>
       </h2>

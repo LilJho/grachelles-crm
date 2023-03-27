@@ -14,13 +14,10 @@ import {
 import { HiPlus } from "react-icons/hi";
 import useToggle from "hooks/useToggle";
 import AddInventory from "@/components/screens/inventory/InventoryForm/AddInventory";
+import SelectBranch from "@/components/UI/SelectBranch";
 
 const InventoryPage = () => {
-  const { data: BranchData, isLoading: BranchLoading } =
-    useFetchData<BranchesResponse>({
-      collectionName: Collections.Branches,
-    });
-  const [selectBranch, setSelectBranch] = useState(BranchData?.[0]);
+  const [selectBranch, setSelectBranch] = useState<BranchesResponse>();
 
   const {
     data: StocksData,
@@ -31,30 +28,19 @@ const InventoryPage = () => {
     expand: "branch",
   });
 
-  const handleSelectBranch = (
-    e: React.SetStateAction<BranchesResponse | undefined>
-  ) => {
-    setSelectBranch(e);
-    refetch();
-  };
-
   const [showAddForm, toggleAddForm] = useToggle();
 
   return (
     <MainLayout>
       <PageTitle title="Inventory Record">
         <div className="flex items-center max-w-sm gap-6 flex-1">
-          <SelectField
-            size="sm"
-            fullWidth
-            data={BranchData}
-            objKey="name"
-            value={selectBranch}
-            onChange={(e) => handleSelectBranch(e)}
+          <SelectBranch
+            selectBranch={selectBranch as BranchesResponse}
+            setSelectBranch={setSelectBranch}
           />
           <Button
             size="sm"
-            color="green"
+            color="blue"
             icon={<HiPlus />}
             onClick={toggleAddForm}
           >
@@ -62,7 +48,7 @@ const InventoryPage = () => {
           </Button>
         </div>
       </PageTitle>
-      <div className="mt-10">
+      <div>
         <InventoryTable
           data={StocksData as IExpandedStocksResponse[]}
           isLoading={StocksLoading}

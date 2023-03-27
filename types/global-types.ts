@@ -1,13 +1,13 @@
 import {
-  OrderItemsRecord,
-  AddOnsRecordExtend,
   StocksResponse,
   ProductsResponse,
-  ProductsRecord,
-  ProductVariantsRecord,
   ProductVariantsResponse,
   BranchesResponse,
   CategoriesResponse,
+  OrdersResponse,
+  OrderItemsResponse,
+  CashierSalesResponse,
+  UsersResponse,
 } from "types/pocketbase-types";
 
 export interface IStoreProps {}
@@ -32,5 +32,25 @@ export interface IExpandedProductResponse extends ProductsResponse {
     branch: BranchesResponse;
     product_variants: ProductVariantsResponse[];
     category: CategoriesResponse;
+  };
+}
+export interface IOrderProps {
+  data: IExpandedOrderResponse[];
+  isLoading: boolean;
+}
+
+export interface IExpandedOrderResponse extends OrdersResponse {
+  expand: {
+    order_items: OrderItemsResponse[];
+  };
+}
+export interface ICashierSalesProps {
+  data: IExpandedCashierSalesResponse[];
+  isLoading: boolean;
+}
+
+export interface IExpandedCashierSalesResponse extends CashierSalesResponse {
+  expand: {
+    user: UsersResponse[];
   };
 }

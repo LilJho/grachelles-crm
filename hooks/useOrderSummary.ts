@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { OrdersResponse } from "types/pocketbase-types";
+import { ExpensesResponse, OrdersResponse } from "types/pocketbase-types";
 
-const useOrderSummary = (orders: OrdersResponse[]) => {
+const useOrderSummary = (
+  orders: OrdersResponse[],
+  expenses: ExpensesResponse[]
+) => {
   const [totalDrinks, setTotalDrinks] = useState(0);
   const [totalFood, setTotalFood] = useState(0);
   const [totalDrinksAndFood, setTotalDrinksAndFood] = useState(0);
@@ -12,6 +15,7 @@ const useOrderSummary = (orders: OrdersResponse[]) => {
   const [totalCashOnHand, setTotalCashOnHand] = useState(0);
   const [totalSales, setTotalSales] = useState(0);
   const [totalIncome, setTotalIncome] = useState(0);
+  const [totalExpenses, setTotalExpenses] = useState(0);
 
   useEffect(() => {
     let drinks = 0;
@@ -24,6 +28,7 @@ const useOrderSummary = (orders: OrdersResponse[]) => {
     let cashOnHand = 0;
     let sales = 0;
     let income = 0;
+    let totalExpense = 0;
 
     orders?.forEach((order: any) => {
       drinks += order.total_drinks_count;
@@ -39,6 +44,10 @@ const useOrderSummary = (orders: OrdersResponse[]) => {
       income += order.total_amount - order.delivery_fee;
     });
 
+    expenses?.forEach((expense) => {
+      totalExpense += expense.total_price;
+    });
+
     setTotalDrinks(drinks);
     setTotalFood(food);
     setTotalDrinksAndFood(drinksAndFood);
@@ -48,8 +57,9 @@ const useOrderSummary = (orders: OrdersResponse[]) => {
     setTotalCashFoodPanda(cashFoodPanda);
     setTotalCashOnHand(cashOnHand);
     setTotalSales(sales);
-    setTotalIncome(income);
-  }, [orders]);
+    setTotalIncome(income - totalExpense);
+    setTotalExpenses(totalExpense);
+  }, [expenses, orders]);
 
   return {
     totalDrinks,
@@ -62,6 +72,7 @@ const useOrderSummary = (orders: OrdersResponse[]) => {
     totalCashOnHand,
     totalSales,
     totalIncome,
+    totalExpenses,
   };
 };
 

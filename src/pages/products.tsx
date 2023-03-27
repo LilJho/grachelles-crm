@@ -65,7 +65,7 @@ const ProductsPage = () => {
           />
           <Button
             size="sm"
-            color="green"
+            color="blue"
             icon={<HiPlus />}
             onClick={toggleAddForm}
           >

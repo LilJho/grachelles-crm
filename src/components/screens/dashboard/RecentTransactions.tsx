@@ -64,11 +64,13 @@ const RecentTransactions = ({ data, isLoading }: IRecentTransaction) => {
               </TableColumn>
               <TableColumn className="capitalize">{val.discount}</TableColumn>
               <TableColumn className="capitalize">
-                {val.delivery_fee}
+                ₱ {val.delivery_fee?.toFixed(2)}
               </TableColumn>
-              <TableColumn className="capitalize">{val.sub_total}</TableColumn>
               <TableColumn className="capitalize">
-                {val.total_amount}
+                ₱ {val.sub_total?.toFixed(2)}
+              </TableColumn>
+              <TableColumn className="capitalize">
+                ₱ {val.total_amount?.toFixed(2)}
               </TableColumn>
               <TableColumn className="capitalize">
                 {val.transactionTime}
