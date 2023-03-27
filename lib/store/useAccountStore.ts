@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { BaseStoreState } from "types/BaseStore";
 import { UsersRecord, UsersResponse } from "types/pocketbase-types";
 import { pb } from "lib/database/pocketbase";
+import { BaseRecord } from "types/BaseRecord";
+import { Branch } from "./useBranchStore";
 
 export interface AuthStoreData extends UsersRecord {}
 
@@ -23,8 +25,22 @@ type AccountUpdatePasswordData = {
   passwordConfirm: string;
 };
 
-export interface AuthStore extends BaseStoreState {
-  data?: UsersResponse<unknown>;
+interface Account extends BaseRecord {
+  avatar: string;
+  branch: Array<string>;
+  emailVisibility: boolean;
+  employee_data: string;
+  name: string;
+  roles: Array<string>;
+  username: string;
+  verified: boolean;
+  expand: {
+    branch?: Branch;
+  };
+}
+
+export interface AccountStore extends BaseStoreState {
+  accounts: Array<Account>;
   createAccount: (data: AccountCreateData) => Promise<void>;
   getAccounts: () => Promise<void>;
   updateAccountInfo: (id: string, data: AccountUpdateInfoData) => Promise<void>;
@@ -35,7 +51,7 @@ export interface AuthStore extends BaseStoreState {
   deleteAccount: (id: string) => Promise<void>;
 }
 
-const useAccountStore = create<AuthStore>((set) => ({
+const useAccountStore = create<AccountStore>((set) => ({
   accounts: [],
   error: null,
   isLoading: false,
@@ -75,6 +91,7 @@ const useAccountStore = create<AuthStore>((set) => ({
 
       const records = await pb.collection("users").getFullList({
         sort: "-created",
+        expand: "branch,employee_data",
       });
       console.log(records);
       set({
@@ -90,7 +107,7 @@ const useAccountStore = create<AuthStore>((set) => ({
       });
     }
   },
-  updateAccountInfo: async (id: string, data: AccountUpdateInfoData) => {
+  updateAccountInfo: async (id, data) => {
     try {
       set({
         isLoading: true,
@@ -113,10 +130,7 @@ const useAccountStore = create<AuthStore>((set) => ({
       });
     }
   },
-  updateAccountPassword: async (
-    id: string,
-    data: AccountUpdatePasswordData
-  ) => {
+  updateAccountPassword: async (id, data) => {
     try {
       set({
         isLoading: true,
