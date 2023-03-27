@@ -4,27 +4,36 @@ import { UsersRecord, UsersResponse } from "types/pocketbase-types";
 import { pb } from "lib/database/pocketbase";
 import { BaseRecord } from "types/BaseRecord";
 
-type BranchData = {
+type EmployeeData = {
   name: string;
+  gender: string;
+  birthday: string;
+  contact: string;
+  address: string;
 };
 
-export interface Branch extends BaseRecord {
+export interface Employee extends BaseRecord {
   name: string;
+  gender: string;
+  birthday: string;
+  contact: string;
+  address: string;
 }
 
-export interface BranchStore extends BaseStoreState {
-  branches: Array<Branch>;
-  createBranch: (data: BranchData) => Promise<void>;
-  getBranches: () => Promise<void>;
-  updateBranch: (id: string, data: BranchData) => Promise<void>;
+export interface EmployeeStore extends BaseStoreState {
+  employee: Array<Employee>;
+  createEmployee: (data: EmployeeData) => Promise<void>;
+  getEmployees: () => Promise<void>;
+  updateEmployee: (id: string, data: EmployeeData) => Promise<void>;
+  deleteEmployee: (id: string) => Promise<void>;
 }
 
-const useBranchStore = create<BranchStore>((set) => ({
-  branches: [],
+const useEmployeeStore = create<EmployeeStore>((set) => ({
+  employee: [],
   error: null,
   isLoading: false,
   success: false,
-  createBranch: async (data) => {
+  createEmployee: async (data) => {
     try {
       set({
         isLoading: true,
@@ -32,7 +41,7 @@ const useBranchStore = create<BranchStore>((set) => ({
         error: null,
       });
 
-      await pb.collection("branches").create(data);
+      await pb.collection("employee").create(data);
 
       set({
         error: null,
@@ -46,7 +55,7 @@ const useBranchStore = create<BranchStore>((set) => ({
       });
     }
   },
-  getBranches: async () => {
+  getEmployees: async () => {
     try {
       set({
         isLoading: true,
@@ -54,7 +63,7 @@ const useBranchStore = create<BranchStore>((set) => ({
         error: null,
       });
 
-      const records = await pb.collection("branches").getFullList({
+      const records = await pb.collection("employee").getFullList({
         sort: "-created",
       });
       console.log(records);
@@ -71,7 +80,7 @@ const useBranchStore = create<BranchStore>((set) => ({
       });
     }
   },
-  updateBranch: async (id, data) => {
+  updateEmployee: async (id, data) => {
     try {
       set({
         isLoading: true,
@@ -79,7 +88,30 @@ const useBranchStore = create<BranchStore>((set) => ({
         error: null,
       });
 
-      await pb.collection("branches").update(id, data);
+      await pb.collection("employee").update(id, data);
+
+      set({
+        error: null,
+        success: true,
+      });
+    } catch (error) {
+      console.log(error);
+      set({ error });
+    } finally {
+      set({
+        isLoading: true,
+      });
+    }
+  },
+  deleteEmployee: async (id) => {
+    try {
+      set({
+        isLoading: true,
+        success: false,
+        error: null,
+      });
+
+      await pb.collection("employee").delete(id);
 
       set({
         error: null,
@@ -96,4 +128,4 @@ const useBranchStore = create<BranchStore>((set) => ({
   },
 }));
 
-export default useBranchStore;
+export default useEmployeeStore;
