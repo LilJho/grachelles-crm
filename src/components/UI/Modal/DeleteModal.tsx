@@ -6,7 +6,7 @@ import Modal from "./Modal";
 type IDeleteModalProps = {
   isOpen?: boolean;
   toggle?: () => void;
-  title: string;
+  title?: string;
   buttonText?: string;
   onClick?: () => void;
   isLoading?: boolean;
@@ -24,8 +24,8 @@ const DeleteModal: FC<IDeleteModalProps> = ({
 }) => {
   return (
     <Modal title={title} toggle={toggle} isOpen={isOpen} className="max-w-sm">
-      <div className="flex justify-center mb-8">
-        <RiAlertFill className="w-10 h-10 text-warning-500" />
+      <div className="flex justify-center mb-4">
+        <RiAlertFill className="w-10 h-10 text-red-500" />
       </div>
       <h1 className="text-center text-2xl font-bold">Delete Record</h1>
       <p className="mt-4 text-center text-sm px-4 text-gray-600">

@@ -8,7 +8,7 @@ import { FormEvent, useState } from "react";
 import { pb } from "lib/database/pocketbase";
 import useFetchData from "hooks/useFetchData";
 import { Collections } from "types/pocketbase-types";
-import ComboBox from "@/components/UI/ComboBox";
+import ComboBox from "@/components/UI/Selects/ComboBox";
 
 const AddProductCard = ({ toggleProductModal }) => {
   const [showIngredientModal, toggleIngredientModal] = useToggle();

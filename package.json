@@ -22,6 +22,7 @@
     "pocketbase": "^0.12.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.5",
     "react-icons": "^4.7.1",
     "react-is": "^16.8",
     "react-paginate": "^8.1.4",

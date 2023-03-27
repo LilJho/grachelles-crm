@@ -1,9 +1,8 @@
 import { FC, Fragment } from "react";
 import { HiCheck, HiSelector } from "react-icons/hi";
 import { Listbox, Transition } from "@headlessui/react";
-import Label from "./Inputs/Label";
-import styled from "styled-components";
-import ErrorMessage from "./Inputs/ErrorMessage";
+import Label from "../Inputs/Label";
+import ErrorMessage from "../Inputs/ErrorMessage";
 
 type ISelectFieldProps = {
   fullWidth?: boolean;
@@ -30,6 +29,7 @@ const SelectField: FC<ISelectFieldProps> = ({
   error = "",
 }) => {
   const getWidth = setWidthBasedOnLength(data, objKey);
+
   return (
     <div
       className={`flex flex-col ${TextSize(size)} ${fullWidth ? "w-full" : ""}`}
@@ -39,13 +39,16 @@ const SelectField: FC<ISelectFieldProps> = ({
         <div className="relative">
           {value !== "" ? (
             <Listbox.Button
-              className={`relative ${
+              className={`relative capitalize ${
                 fullWidth && "w-full"
               } cursor-default bg-white text-left border border-gray-300 focus:border-primary-600 focus:outline-none ${SelectSize(
                 size
               )}`}
             >
-              <SelectBox minWidth={getWidth} fullWidth={fullWidth}>
+              <div
+                style={{ minWidth: getWidth }}
+                className={`${fullWidth && "w-full"}`}
+              >
                 {typeof value === "object" && objKey !== "" ? (
                   <span className="block truncate">{value[objKey]}</span>
                 ) : (
@@ -57,7 +60,7 @@ const SelectField: FC<ISelectFieldProps> = ({
                     aria-hidden="true"
                   />
                 </span>
-              </SelectBox>
+              </div>
             </Listbox.Button>
           ) : (
             <Listbox.Button
@@ -85,7 +88,7 @@ const SelectField: FC<ISelectFieldProps> = ({
                   <Listbox.Option
                     key={valueIdx}
                     className={({ active }) =>
-                      `relative cursor-pointer select-none ${OptionSize(
+                      `relative cursor-pointer capitalize select-none ${OptionSize(
                         size
                       )} ${TextSize(size)}  ${
                         active
@@ -163,15 +166,6 @@ const OptionSize = (size = "default") =>
     sm: "py-1.5 pl-10 pr-4",
     lg: "py-2 pl-10 pr-4",
   }[size]);
-
-interface SelectBoxProps {
-  fullWidth?: boolean;
-  minWidth?: number;
-}
-
-const SelectBox = styled.div<SelectBoxProps>`
-  width: ${(props) => (props.fullWidth ? "100%" : `${props.minWidth}rem`)};
-`;
 
 const setWidthBasedOnLength = (array: any[], objKey = "") => {
   let longestWord = "";

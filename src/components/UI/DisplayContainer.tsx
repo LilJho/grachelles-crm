@@ -1,6 +1,5 @@
 import React from "react";
 import SearchField from "./Inputs/SearchField";
-import SelectField from "./SelectField";
 import ShowEntries from "./Table/ShowEntries";
 
 type Props = {
@@ -23,7 +22,7 @@ const DisplayContainer = ({
   label,
 }: Props) => {
   return (
-    <div className="px-6 py-8 md:px-10 md:py-12 bg-white rounded-lg border border-gray-200">
+    <div className="px-6 py-8 bg-white rounded-lg border border-gray-200">
       <div className="flex flex-col gap-10">
         <div className="flex flex-col gap-4 md:gap-0 md:flex-row md:items-center md:justify-between">
           <h2 className={`font-semibold text-xl ${textColor}`}>{label}</h2>

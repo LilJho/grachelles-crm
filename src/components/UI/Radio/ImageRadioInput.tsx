@@ -5,7 +5,7 @@ import CashierImg from "public/images/cashier.svg";
 import ChefImg from "public/images/chef.svg";
 import StockerImg from "public/images/stocker.svg";
 
-const RadioOptions = ({
+const ImageRadioInput = ({
   className,
   size,
   fullWidth,
@@ -63,7 +63,7 @@ const RadioOptions = ({
   );
 };
 
-export default RadioOptions;
+export default ImageRadioInput;
 
 const ImageForOptions = {
   cashier: CashierImg,

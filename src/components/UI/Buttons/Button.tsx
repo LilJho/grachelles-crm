@@ -31,7 +31,7 @@ const Button: FC<IButtonProps> = ({
 }) => {
   return (
     <button
-      className={`inline-block border border-transparent active:scale-95 transition-transform focus:outline-none font-medium ${
+      className={`inline-block whitespace-nowrap border border-transparent active:scale-95 transition-transform focus:outline-none font-medium ${
         fullWidth && "w-full"
       }
       ${textDisplay && "!px-0"}

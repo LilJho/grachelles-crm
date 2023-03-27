@@ -33,7 +33,12 @@ const Table = <T,>({
           isLoading={isLoading}
         />
       ) : (
-        <CustomTable header={header} data={data} query={query}>
+        <CustomTable
+          header={header}
+          data={data}
+          query={query}
+          isLoading={isLoading}
+        >
           {children}
         </CustomTable>
       )}
@@ -73,16 +78,18 @@ const DisplayTable = <T,>({
       </table>
       {isLoading && (
         <div className="flex justify-center w-full my-20">
-          <PropagateLoader color="#5AC39A" size={30} />
+          <PropagateLoader color="#CD8E29" size={30} />
         </div>
       )}
       {!isLoading && data?.length === 0 && query !== "" && (
         <div className="flex flex-col items-center justify-center mt-6 mb-10">
-          <Image
-            src={NoResultFoundImg}
-            alt="Searching File Illustration"
-            className="w-56"
-          />
+          <div className="w-56 relative">
+            <Image
+              src={NoResultFoundImg}
+              alt="Searching File Illustration"
+              layout="responsive"
+            />
+          </div>
           <h2 className="max-w-md text-center text-gray-400">
             Sorry, we could not find any results for your search query{" "}
             <span className="font-semibold text-primary-600">
@@ -95,11 +102,9 @@ const DisplayTable = <T,>({
       )}
       {!isLoading && data?.length === 0 && query === "" && (
         <div className="flex flex-col items-center justify-center mt-6 mb-10">
-          <Image
-            src={NoDataFoundImg}
-            alt="Searching File Illustration"
-            className="w-64"
-          />
+          <div className="w-56 relative">
+            <Image src={NoDataFoundImg} alt="Searching File Illustration" />
+          </div>
           <h2 className="max-w-md -mt-8 text-lg font-medium text-center text-gray-400">
             No Data Found!
           </h2>
@@ -114,24 +119,40 @@ const CustomTable = <T,>({
   children,
   data = [],
   query = "",
+  isLoading = false,
 }: ICustomTableProps<T>) => {
-  console.log(data?.length === 0);
-  // console.log(query !== "");
   return (
     <div className="overflow-x-auto bg-white">
       <table className="min-w-full text-sm divide-y-2 divide-neutral-200">
         <thead>
-          <tr>{header}</tr>
+          <tr>
+            {Array.isArray(header) ? (
+              <>
+                {header?.map((column: string, idx: number) => (
+                  <TableHead key={idx}>{column}</TableHead>
+                ))}
+              </>
+            ) : (
+              <>{header}</>
+            )}
+          </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">{children}</tbody>
       </table>
-      {data?.length === 0 && query !== "" && (
+      {isLoading && (
+        <div className="flex justify-center w-full my-20">
+          <PropagateLoader color="#CD8E29" size={30} />
+        </div>
+      )}
+      {!isLoading && data?.length === 0 && query !== "" && (
         <div className="flex flex-col items-center justify-center my-10">
-          <Image
-            src={NoResultFoundImg}
-            alt="Searching File Illustration"
-            className="w-56"
-          />
+          <div className="w-56 relative">
+            <Image
+              src={NoResultFoundImg}
+              alt="Searching File Illustration"
+              layout="responsive"
+            />
+          </div>
           <h2 className="max-w-md text-center text-gray-400">
             Sorry, we could not find any results for your search query{" "}
             <span className="font-semibold text-primary-600">
@@ -142,13 +163,11 @@ const CustomTable = <T,>({
           </h2>
         </div>
       )}
-      {data?.length === 0 && query === "" && (
+      {!isLoading && data?.length === 0 && query === "" && (
         <div className="flex flex-col items-center justify-center my-10">
-          <Image
-            src={NoDataFoundImg}
-            alt="Searching File Illustration"
-            className="w-64"
-          />
+          <div className="w-56 relative">
+            <Image src={NoDataFoundImg} alt="Searching File Illustration" />
+          </div>
           <h2 className="max-w-md -mt-8 text-lg font-medium text-center text-gray-400">
             No Data Found!
           </h2>
