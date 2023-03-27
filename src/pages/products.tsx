@@ -50,11 +50,10 @@ const ProductsPage = () => {
     });
 
   const [showAddForm, toggleAddForm] = useToggle();
-
   return (
     <MainLayout>
       <PageTitle title="Products Record">
-        <div className="flex items-center max-w-sm gap-6 flex-1">
+        <div className="flex items-center flex-1 max-w-sm gap-6">
           <SelectField
             size="sm"
             fullWidth
