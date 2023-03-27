@@ -4,36 +4,36 @@ import { UsersRecord, UsersResponse } from "types/pocketbase-types";
 import { pb } from "lib/database/pocketbase";
 import { BaseRecord } from "types/BaseRecord";
 
-type EmployeeData = {
+type ExpenseData = {
   name: string;
-  gender: string;
-  birthday: string;
-  contact: string;
-  address: string;
+  quantity: number;
+  price: number;
+  total_price: number;
+  user: string;
 };
 
-export interface Employee extends BaseRecord {
+export interface Expense extends BaseRecord {
   name: string;
-  gender: string;
-  birthday: string;
-  contact: string;
-  address: string;
+  quantity: number;
+  price: number;
+  total_price: number;
+  user: string;
 }
 
-export interface EmployeeStore extends BaseStoreState {
-  employee: Array<Employee>;
-  createEmployee: (data: EmployeeData) => Promise<void>;
-  getEmployees: () => Promise<void>;
-  updateEmployee: (id: string, data: EmployeeData) => Promise<void>;
-  deleteEmployee: (id: string) => Promise<void>;
+export interface ExpenseStore extends BaseStoreState {
+  expenses: Array<Expense>;
+  createExpense: (data: ExpenseData) => Promise<void>;
+  getExpenses: () => Promise<void>;
+  updateExpense: (id: string, data: ExpenseData) => Promise<void>;
+  deleteExpense: (id: string) => Promise<void>;
 }
 
-const useEmployeeStore = create<EmployeeStore>((set) => ({
-  employee: [],
+const useExpenseStore = create<ExpenseStore>((set) => ({
+  expenses: [],
   error: null,
   isLoading: false,
   success: false,
-  createEmployee: async (data) => {
+  createExpense: async (data) => {
     try {
       set({
         isLoading: true,
@@ -41,7 +41,7 @@ const useEmployeeStore = create<EmployeeStore>((set) => ({
         error: null,
       });
 
-      await pb.collection("employee").create(data);
+      await pb.collection("expenses").create(data);
 
       set({
         error: null,
@@ -55,7 +55,7 @@ const useEmployeeStore = create<EmployeeStore>((set) => ({
       });
     }
   },
-  getEmployees: async () => {
+  getExpenses: async () => {
     try {
       set({
         isLoading: true,
@@ -63,7 +63,7 @@ const useEmployeeStore = create<EmployeeStore>((set) => ({
         error: null,
       });
 
-      const records = await pb.collection("employee").getFullList({
+      const records = await pb.collection("expenses").getFullList({
         sort: "-created",
       });
       console.log(records);
@@ -80,7 +80,7 @@ const useEmployeeStore = create<EmployeeStore>((set) => ({
       });
     }
   },
-  updateEmployee: async (id, data) => {
+  updateExpense: async (id, data) => {
     try {
       set({
         isLoading: true,
@@ -88,7 +88,7 @@ const useEmployeeStore = create<EmployeeStore>((set) => ({
         error: null,
       });
 
-      await pb.collection("employee").update(id, data);
+      await pb.collection("expenses").update(id, data);
 
       set({
         error: null,
@@ -103,7 +103,7 @@ const useEmployeeStore = create<EmployeeStore>((set) => ({
       });
     }
   },
-  deleteEmployee: async (id) => {
+  deleteExpense: async (id: string) => {
     try {
       set({
         isLoading: true,
@@ -111,7 +111,7 @@ const useEmployeeStore = create<EmployeeStore>((set) => ({
         error: null,
       });
 
-      await pb.collection("employee").delete(id);
+      await pb.collection("expenses").delete(id);
 
       set({
         error: null,
@@ -128,4 +128,4 @@ const useEmployeeStore = create<EmployeeStore>((set) => ({
   },
 }));
 
-export default useEmployeeStore;
+export default useExpenseStore;
