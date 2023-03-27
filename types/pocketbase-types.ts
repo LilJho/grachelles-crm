@@ -197,6 +197,8 @@ export type OrdersRecord = {
     order_items: OrderItemsRecord[];
   };
   all_ingredients_id?: string[];
+  discount: boolean;
+  transactionTime: string;
 };
 
 export enum ProductVariantsSizeOptions {

@@ -19,7 +19,7 @@ const MainLayout = ({ children }: IMainLayoutProps) => {
         <Sidebar isOpen={showSidebar} toggle={toggleSidebar} />
         <div className="flex-1 h-full w-full md:pl-72">
           <Header toggleSidebar={toggleSidebar} />
-          <div className="p-6 bg-gray-100">{children}</div>
+          <div className="py-6 px-10 bg-gray-100">{children}</div>
         </div>
       </div>
     </PrivatePage>

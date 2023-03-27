@@ -2,7 +2,7 @@ import React from "react";
 
 interface PageTitleProps {
   title: string;
-  children: JSX.Element[] | JSX.Element;
+  children?: JSX.Element[] | JSX.Element;
 }
 
 const PageTitle = ({ title = "", children }: PageTitleProps) => {

@@ -1,4 +1,5 @@
 import MainLayout from "@/components/layout/MainLayout";
+
 import React, { useCallback, useEffect } from "react";
 import useBranchStore from "lib/store/useBranchStore";
 
@@ -12,7 +13,10 @@ const BranchPage = () => {
     fetchData();
   }, [fetchData]);
 
-  return <MainLayout>BranchPage</MainLayout>;
+  return <MainLayout>
+      <PageTitle title="Store Branches" />
+    </MainLayout>;
+
 };
 
 export default BranchPage;
