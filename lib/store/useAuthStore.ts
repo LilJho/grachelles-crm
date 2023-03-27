@@ -15,9 +15,9 @@ export interface AuthStore extends BaseStoreState {
   data?: UsersResponse<unknown>;
   currentBranch?: BranchesResponse;
   setCurrentBranch: (currentBranch: BranchesResponse) => void;
-  getUser: () => void;
-  login: (username: string, password: string) => void;
-  logout: () => void;
+  getUser: () => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const useAuthStore = create<AuthStore>()(
@@ -98,7 +98,7 @@ const useAuthStore = create<AuthStore>()(
           set({ isLoading: false });
         }
       },
-      logout: () => {
+      logout: async () => {
         pb.authStore.clear();
         set({
           data: undefined,

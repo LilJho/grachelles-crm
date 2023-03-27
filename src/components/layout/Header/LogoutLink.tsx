@@ -9,10 +9,10 @@ const LogoutLink = () => {
   const { logout } = useAuthStore();
   const router = useRouter();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     router.push("/login");
     // Log the user out
-    logout();
+    await logout();
   };
 
   return (

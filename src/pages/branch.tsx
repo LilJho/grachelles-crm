@@ -1,13 +1,22 @@
 import MainLayout from "@/components/layout/MainLayout";
-import PageTitle from "@/components/UI/PageTitle";
-import React from "react";
+
+import React, { useCallback, useEffect } from "react";
+import useBranchStore from "lib/store/useBranchStore";
 
 const BranchPage = () => {
-  return (
-    <MainLayout>
+  const { getBranches } = useBranchStore();
+  const fetchData = useCallback(async () => {
+    await getBranches();
+  }, [getBranches]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  return <MainLayout>
       <PageTitle title="Store Branches" />
-    </MainLayout>
-  );
+    </MainLayout>;
+
 };
 
 export default BranchPage;
