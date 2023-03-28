@@ -10,9 +10,9 @@ interface IBrachFormProps {
 
 const AddAccounts = ({ isOpen, toggle }: IBrachFormProps) => {
   const defaultValue = {
+    name: "",
     username: "",
     email: "",
-    emailVisibility: true,
     password: "",
     passwordConfirm: "",
     roles: [],
@@ -23,7 +23,7 @@ const AddAccounts = ({ isOpen, toggle }: IBrachFormProps) => {
 
   const handleFormSubmit = useCreateData({
     Collections: Collections.Users,
-    data: formData,
+    data: { ...formData, passwordConfirm: formData.password },
     toggle,
     setFormData,
     defaultValue: {},

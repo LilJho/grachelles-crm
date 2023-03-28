@@ -70,7 +70,7 @@ const StoreBranchTable = ({ data, isLoading }: IStoreBranchProps) => {
                     <Button
                       size="xs"
                       color="red"
-                      onClick={() => handleGetDeleteData(val)}
+                      // onClick={() => handleGetDeleteData(val)}
                     >
                       Delete
                     </Button>

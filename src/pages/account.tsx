@@ -9,26 +9,17 @@ import Button from "@/components/UI/Buttons/Button";
 import { HiPlus } from "react-icons/hi";
 import InventoryTable from "@/components/screens/inventory/InventoryTable";
 import AccountsTable from "@/components/screens/accounts/AccountsTable";
-import { UsersResponse } from "types/pocketbase-types";
+import { Collections, UsersResponse } from "types/pocketbase-types";
 import { ExpandedUser } from "types/global-types";
 import AddAccounts from "@/components/screens/accounts/AccountsForm/AddAccounts";
+import useFetchData from "hooks/useFetchData";
 
 const AccountPage = () => {
-  const { isLoading, error, success, createAccount, getAccounts, accounts } =
-    useAccountStore();
   const [showAddForm, toggleAddForm] = useToggle();
-
-  async function handleSubmit() {
-    // await createAccount();
-  }
-
-  const fetchData = useCallback(async () => {
-    await getAccounts();
-  }, [getAccounts]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  const { data } = useFetchData<UsersResponse>({
+    collectionName: Collections.Users,
+    expand: "branch",
+  });
 
   return (
     <MainLayout>
@@ -45,7 +36,7 @@ const AccountPage = () => {
         </div>
       </PageTitle>
       <div>
-        <AccountsTable data={accounts as any} />
+        <AccountsTable data={data as any} />
       </div>
       {showAddForm && (
         <AddAccounts toggle={toggleAddForm} isOpen={showAddForm} />
