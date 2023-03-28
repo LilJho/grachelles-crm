@@ -17,25 +17,23 @@ import SelectBranch from "@/components/UI/SelectBranch";
 const CURRENT_DATETIME = dayjs().format("YYYY-MM-DD");
 
 export default function Home() {
-  const [selectBranch, setSelectBranch] = useState<BranchesResponse>();
-
   const {
     data: OrdersData,
     isLoading: OrdersLoading,
-    refetch: RefetchOrders,
+    refetch: refetchOrder,
   } = useFetchData<OrdersResponse>({
     collectionName: Collections.Orders,
-    filter: `transactionTime>="${CURRENT_DATETIME} 00:00:00"&&branch="${selectBranch?.id}"`,
+    filter: `transactionTime>="${CURRENT_DATETIME} 00:00:00"`,
     expand: "order_items",
   });
 
   const {
     data: ExpensesData,
     isLoading: ExpensesLoading,
-    refetch: RefetchExpenses,
+    refetch: refetchExpenses,
   } = useFetchData<ExpensesResponse>({
     collectionName: Collections.Expenses,
-    filter: `transactionTime>="${CURRENT_DATETIME} 00:00:00"&&branch="${selectBranch?.id}"`,
+    filter: `transactionTime>="${CURRENT_DATETIME} 00:00:00"`,
   });
 
   const summary = useOrderSummary(
@@ -45,12 +43,7 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <PageTitle title="Dashboard">
-        <SelectBranch
-          selectBranch={selectBranch as BranchesResponse}
-          setSelectBranch={setSelectBranch}
-        />
-      </PageTitle>
+      <PageTitle title="Dashboard" />
       <div className="flex flex-col gap-10">
         <Summaries data={summary} />
         <RecentTransactions

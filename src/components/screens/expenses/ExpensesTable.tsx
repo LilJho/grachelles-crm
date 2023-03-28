@@ -4,12 +4,8 @@ import Pagination from "@/components/UI/Pagination";
 import Table, { TableColumn, TableRow } from "@/components/UI/Table/Table";
 import useTableHook from "hooks/useTableHook";
 import React from "react";
-import { ExpensesResponse } from "types/pocketbase-types";
-
-interface IExpensesTableProp {
-  data: ExpensesResponse[];
-  isLoading: boolean;
-}
+import { IExpensesTableProp } from "types/global-types";
+import { ExpensesResponse, UsersResponse } from "types/pocketbase-types";
 
 const ExpensesTable = ({ data, isLoading }: IExpensesTableProp) => {
   const {
@@ -35,6 +31,7 @@ const ExpensesTable = ({ data, isLoading }: IExpensesTableProp) => {
       >
         <Table
           header={[
+            "Employee Name",
             "Product Name",
             "Quantity",
             "Price",
@@ -48,6 +45,7 @@ const ExpensesTable = ({ data, isLoading }: IExpensesTableProp) => {
           {currentItems?.map((val) => {
             return (
               <TableRow key={val.id}>
+                <TableColumn>{val.expand.user?.name}</TableColumn>
                 <TableColumn>{val.name}</TableColumn>
                 <TableColumn>{val.quantity}</TableColumn>
                 <TableColumn>₱ {val.price.toFixed(2)}</TableColumn>

@@ -1,22 +1,19 @@
 import Button from "@/components/UI/Buttons/Button";
 import DateField from "@/components/UI/Inputs/DateField";
 import Modal from "@/components/UI/Modal/Modal";
-import useGenerateSales from "hooks/useGenerateSales";
 import React, { useState } from "react";
 import SelectField from "./../../UI/Selects/SelectField";
 import { CSVLink } from "react-csv";
 
-import dayjs from "dayjs";
 import useFetchData from "hooks/useFetchData";
 import { BranchesResponse, Collections } from "types/pocketbase-types";
-import { filterSalesData, filterCashierData } from "helper/filteCSVReportData";
-import useGenerateCashierLog from "hooks/useGenerateCashierLog";
+import { filterExpensesData } from "helper/filteCSVReportData";
+import useGenerateExpenses from "hooks/useGenerateExpenses";
 
 interface IGenerate {
   isOpen: boolean;
   toggle: () => void;
-  cashierLog: any;
-  orderData: any;
+  expensesData: any;
 }
 interface IFilterSales {
   startDate: string;
@@ -24,12 +21,7 @@ interface IFilterSales {
   branch: BranchesResponse | string;
 }
 
-const GenerateReportCSV = ({
-  isOpen,
-  toggle,
-  cashierLog,
-  orderData,
-}: IGenerate) => {
+const GenerateReportCSV = ({ isOpen, toggle, expensesData }: IGenerate) => {
   const { data: branchData, isLoading: branchLoading } =
     useFetchData<BranchesResponse>({
       collectionName: Collections.Branches,
@@ -41,22 +33,12 @@ const GenerateReportCSV = ({
     branch: "",
   });
 
-  const [filterCashier, setFilterCashier] = useState<IFilterSales>({
-    startDate: "",
-    endDate: "",
-    branch: "",
-  });
-
   const handleSalesFieldChange = (key: string, val: any, setState: any) => {
     setState((prev: any) => ({ ...prev, [key]: val }));
   };
 
-  const { headers: SalesHeader, result } = useGenerateSales(
-    filterSalesData(filterSales as any, orderData) as any[]
-  );
-
-  const { headers: CashiersHeader, data } = useGenerateCashierLog(
-    filterCashierData(filterCashier as any, cashierLog)
+  const { headers: expensesHeader, data } = useGenerateExpenses(
+    filterExpensesData(filterSales as any, expensesData) as any[]
   );
 
   return (
@@ -108,68 +90,9 @@ const GenerateReportCSV = ({
           <Note />
           <div className="flex items-center justify-between mt-6 w-full">
             <CSVLink
-              data={result as any}
-              headers={SalesHeader}
-              filename={"SalesReport.csv"}
-              target="_blank"
-              className="flex items-center gap-2 text-sm text-green-700 font-semibold w-full"
-            >
-              <Button size="sm" className="w-full">
-                Generate CSV
-              </Button>
-            </CSVLink>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-4 p-4 border rounded-md border-gray-200">
-          <label className="text-xl font-bold text-gray-700">
-            Cashier Sales Log
-          </label>
-          <div className="flex items-center gap-4 w-full">
-            <DateField
-              label="From"
-              size="sm"
-              fullWidth
-              value={filterCashier.startDate}
-              onChange={(e) =>
-                handleSalesFieldChange(
-                  "startDate",
-                  e.target.value,
-                  setFilterCashier
-                )
-              }
-            />
-            <DateField
-              label="To"
-              size="sm"
-              fullWidth
-              value={filterCashier.endDate}
-              onChange={(e) =>
-                handleSalesFieldChange(
-                  "endDate",
-                  e.target.value,
-                  setFilterCashier
-                )
-              }
-            />
-          </div>
-          <SelectField
-            label="Branch"
-            size="sm"
-            data={branchData}
-            objKey="name"
-            value={(filterCashier.branch as BranchesResponse).name}
-            fullWidth
-            onChange={(e) =>
-              handleSalesFieldChange("branch", e, setFilterCashier)
-            }
-          />
-          <Note />
-          <div className="flex items-center justify-between mt-6 w-full">
-            <CSVLink
               data={data as any}
-              headers={CashiersHeader}
-              filename={"CashierLog.csv"}
+              headers={expensesHeader}
+              filename={"ExpensesReport.csv"}
               target="_blank"
               className="flex items-center gap-2 text-sm text-green-700 font-semibold w-full"
             >

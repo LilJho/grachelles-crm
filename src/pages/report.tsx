@@ -5,7 +5,7 @@ import Button from "@/components/UI/Buttons/Button";
 import PageTitle from "@/components/UI/PageTitle";
 import SelectBranch from "@/components/UI/SelectBranch";
 import useFetchData from "hooks/useFetchData";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RiFileExcel2Line } from "react-icons/ri";
 import {
   IExpandedCashierSalesResponse,
@@ -19,10 +19,9 @@ import {
   OrdersResponse,
 } from "types/pocketbase-types";
 import GenerateReportCSV from "@/components/screens/report/GenerateReportCSV";
+import useSelectBranch from "./../../hooks/useSelectBranch";
 
 const ReportPage = () => {
-  const [selectBranch, setSelectBranch] = useState<BranchesResponse>();
-
   const { data: ordersData, isLoading: ordersLoading } =
     useFetchData<OrdersResponse>({
       collectionName: Collections.Orders,
@@ -37,14 +36,27 @@ const ReportPage = () => {
 
   const [showExport, toggleExport] = useToggle();
 
+  const { filterData, selectBranch, setSelectBranch, BranchesData } =
+    useSelectBranch();
+
+  const filteredOrderData = filterData(
+    ordersData,
+    (item: { branch: string }) => item.branch === selectBranch?.id
+  );
+  const filteredCashierData = filterData(
+    cashierSalesData,
+    (item: { branch: string }) => item.branch === selectBranch?.id
+  );
+
   return (
     <>
       <MainLayout>
         <PageTitle title="Store Records">
           <div className="flex items-center max-w-sm gap-6 flex-1">
             <SelectBranch
+              data={BranchesData as BranchesResponse[]}
               selectBranch={selectBranch as BranchesResponse}
-              setSelectBranch={setSelectBranch}
+              onChange={(e) => setSelectBranch(e)}
             />
             <Button
               size="sm"
@@ -58,11 +70,11 @@ const ReportPage = () => {
         </PageTitle>
         <div className="flex flex-col gap-10">
           <SalesTable
-            data={ordersData as IExpandedOrderResponse[]}
+            data={filteredOrderData as IExpandedOrderResponse[]}
             isLoading={ordersLoading}
           />
           <CashierLogTable
-            data={cashierSalesData as IExpandedCashierSalesResponse[]}
+            data={filteredCashierData as IExpandedCashierSalesResponse[]}
             isLoading={cashierSalesLoading}
           />
         </div>
