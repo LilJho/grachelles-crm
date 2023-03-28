@@ -11,52 +11,71 @@ import {
   IExpandedCashierSalesResponse,
   IExpandedOrderResponse,
 } from "types/global-types";
+import useToggle from "hooks/useToggle";
 import {
   BranchesResponse,
   CashierSalesResponse,
   Collections,
   OrdersResponse,
 } from "types/pocketbase-types";
+import GenerateReportCSV from "@/components/screens/report/GenerateReportCSV";
 
 const ReportPage = () => {
   const [selectBranch, setSelectBranch] = useState<BranchesResponse>();
 
-  const { data: OrdersData, isLoading: OrdersLoading } =
+  const { data: ordersData, isLoading: ordersLoading } =
     useFetchData<OrdersResponse>({
       collectionName: Collections.Orders,
-      expand: "order_items",
+      expand: "order_items, order_items.category, branch",
     });
 
-  const { data: CashierSalesData, isLoading: CashierSalesLoading } =
+  const { data: cashierSalesData, isLoading: cashierSalesLoading } =
     useFetchData<CashierSalesResponse>({
       collectionName: Collections.CashierSales,
       expand: "user.employee_data",
     });
 
+  const [showExport, toggleExport] = useToggle();
+
   return (
-    <MainLayout>
-      <PageTitle title="Store Records">
-        <div className="flex items-center max-w-sm gap-6 flex-1">
-          <SelectBranch
-            selectBranch={selectBranch as BranchesResponse}
-            setSelectBranch={setSelectBranch}
+    <>
+      <MainLayout>
+        <PageTitle title="Store Records">
+          <div className="flex items-center max-w-sm gap-6 flex-1">
+            <SelectBranch
+              selectBranch={selectBranch as BranchesResponse}
+              setSelectBranch={setSelectBranch}
+            />
+            <Button
+              size="sm"
+              color="green"
+              icon={<RiFileExcel2Line />}
+              onClick={toggleExport}
+            >
+              Export Records
+            </Button>
+          </div>
+        </PageTitle>
+        <div className="flex flex-col gap-10">
+          <SalesTable
+            data={ordersData as IExpandedOrderResponse[]}
+            isLoading={ordersLoading}
           />
-          <Button size="sm" color="green" icon={<RiFileExcel2Line />}>
-            Export Records
-          </Button>
+          <CashierLogTable
+            data={cashierSalesData as IExpandedCashierSalesResponse[]}
+            isLoading={cashierSalesLoading}
+          />
         </div>
-      </PageTitle>
-      <div className="flex flex-col gap-10">
-        <SalesTable
-          data={OrdersData as IExpandedOrderResponse[]}
-          isLoading={OrdersLoading}
+      </MainLayout>
+      {showExport && (
+        <GenerateReportCSV
+          isOpen={showExport}
+          toggle={toggleExport}
+          orderData={ordersData}
+          cashierLog={cashierSalesData}
         />
-        <CashierLogTable
-          data={CashierSalesData as IExpandedCashierSalesResponse[]}
-          isLoading={CashierSalesLoading}
-        />
-      </div>
-    </MainLayout>
+      )}
+    </>
   );
 };
 
