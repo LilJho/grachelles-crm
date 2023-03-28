@@ -50,7 +50,7 @@ const StoreBranchTable = ({ data, isLoading }: IStoreBranchProps) => {
         setShowCount={setShowCount}
         query={query}
         setQuery={setQuery}
-        label="Expenses List"
+        label="Store Branches List"
       >
         <Table
           header={["Branch Name", "Actions"]}
