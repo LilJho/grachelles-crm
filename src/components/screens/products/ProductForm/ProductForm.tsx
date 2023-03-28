@@ -12,7 +12,6 @@ import { Collections } from "types/pocketbase-types";
 import ComboBox from "@/components/UI/Selects/ComboBox";
 import { HiPlus } from "react-icons/hi";
 import useToggle from "hooks/useToggle";
-
 import ChooseIngredients from "../../ingredients/ingredientForm/ChooseIngredients";
 import { pb } from "lib/database/pocketbase";
 
@@ -28,6 +27,7 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
       id: "",
       name: "",
     },
+    baseIngredient: [],
   });
 
   const [showChooseForm, toggleChooseForm] = useToggle();
@@ -49,7 +49,6 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
   const { data: CategoryData, isLoading: CategoryIsLoading } = useFetchData({
     collectionName: Collections.Categories,
   });
-
   const { data: Branches, isLoading: BranchesIsLoading } = useFetchData({
     collectionName: Collections.Branches,
   });
@@ -58,15 +57,19 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
     <h1>Loading...</h1>;
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const data = {
       parent_name: productData.name,
       category: productData.category.id,
       branch: productData.branch.id,
-      product_type: "drink",
+      product_type: productData.type,
+      base_ingredients: productData.baseIngredient,
     };
 
     const record = await pb.collection("products").create(data);
+    toggle();
   };
 
   return (
@@ -79,12 +82,12 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <ComboBox
           data={CategoryData}
-          objKey="name"
+          objKey={"name"}
           label="Category"
           size="sm"
           fullWidth
           value={productData.category}
-          onChange={(e) => handleChange("category", e)}
+          onChange={(value) => handleChangeNested("category", value)}
         />
         <TextField
           value={productData.name}
@@ -122,12 +125,16 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
           Choose Base Ingredients
         </Button>
         <Button type="submit" size="sm" className="mt-2" fullWidth>
-          Add Product
+          Done
         </Button>
       </form>
-      {/* {showChooseForm && (
-        <ChooseIngredients isOpen={showChooseForm} toggle={toggleChooseForm} />
-      )} */}
+      {showChooseForm && (
+        <ChooseIngredients
+          setProductData={setProductData}
+          isOpen={showChooseForm}
+          toggle={toggleChooseForm}
+        />
+      )}
     </Modal>
   );
 };
