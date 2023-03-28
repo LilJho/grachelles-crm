@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Collections } from "types/pocketbase-types";
 import ProductForm from "./ProductForm";
 
+
 interface IFormProps {
   isOpen: boolean;
   toggle: () => void;
@@ -53,6 +54,7 @@ const AddProductForm = ({ isOpen, toggle }: IFormProps) => {
       isLoading={handleFormSubmit.isLoading}
     />
   );
+
 };
 
 export default AddProductForm;

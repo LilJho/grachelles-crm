@@ -1,11 +1,32 @@
 import Modal from "@/components/UI/Modal/Modal";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import useFetchData from "hooks/useFetchData";
 import { Collections } from "types/pocketbase-types";
 import ComboBox from "@/components/UI/Selects/ComboBox";
 import Button from "@/components/UI/Buttons/Button";
 
-const ChooseProductVariants = ({ setProductData, isOpen, toggle }) => {
+interface ProductData {
+  name: string;
+  type: string;
+  category: {
+    id: string;
+    name: string;
+  };
+  branch: {
+    id: string;
+    name: string;
+  };
+  baseIngredient: number[];
+  productVariant: string;
+}
+
+interface IModal {
+  setProductData: (prev: ProductData) => void;
+  isOpen: boolean;
+  toggle: () => void;
+}
+
+const ChooseProductVariants = ({ setProductData, isOpen, toggle }: IModal) => {
   const [productVariant, setProductVariant] = useState({});
 
   const { data: ProductVariants, isLoading: ProductVarIsLoading } =
@@ -17,10 +38,10 @@ const ChooseProductVariants = ({ setProductData, isOpen, toggle }) => {
     <h1>Loading...</h1>;
   }
 
-  const HandleChange = (value) => {
+  const HandleChange = (value: any) => {
     setProductVariant(value);
   };
-  const HandleSubmit = (e) => {
+  const HandleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setProductData((prev) => ({ ...prev, productVariant: productVariant.id }));
     toggle();

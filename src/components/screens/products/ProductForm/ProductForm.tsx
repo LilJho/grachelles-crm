@@ -5,7 +5,7 @@ import TextField from "@/components/UI/Inputs/TextField";
 import Modal from "@/components/UI/Modal/Modal";
 import TextRadioInput from "@/components/UI/Radio/TextRadioInput";
 import SelectField from "@/components/UI/Selects/SelectField";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import useFetchData from "hooks/useFetchData";
 import { ProductsResponse } from "types/pocketbase-types";
 import { Collections } from "types/pocketbase-types";
@@ -14,6 +14,7 @@ import { HiPlus } from "react-icons/hi";
 import useToggle from "hooks/useToggle";
 import ChooseIngredients from "../ingredientForm/ChooseIngredients";
 import ProductsVariantModal from "../productVariants/ProductsVariantModal";
+
 
 interface IFormProps {
   isOpen: boolean;
@@ -35,10 +36,12 @@ const ProductForm = ({
 }: IFormProps) => {
   const [showChooseForm, toggleChooseForm] = useToggle();
 
+
   const [showProductVar, toggleProductVar] = useToggle();
 
   const handleChange = (key: any, value: any) => {
     setFormData((prev: any) => ({ ...prev, [key]: value }));
+
   };
 
   const { data: CategoryData, isLoading: CategoryIsLoading } = useFetchData({
@@ -94,7 +97,9 @@ const ProductForm = ({
             label="Type"
             options={["drink", "food"]}
             size="sm"
+
             onChange={(e: any) => handleChange("product_type", e.target.value)}
+
           />
           <ComboBox
             data={Branches as any}
