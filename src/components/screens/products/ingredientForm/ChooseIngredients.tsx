@@ -7,16 +7,46 @@ import TextField from "@/components/UI/Inputs/TextField";
 import Button from "@/components/UI/Buttons/Button";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { pb } from "lib/database/pocketbase";
-import { v4 as uuid } from "uuid";
 
-const ChooseIngredients = ({ isOpen, toggle, setProductData }) => {
-  const [baseIngredients, setBaseIngredients] = useState([
+interface ProductData {
+  name: string;
+  type: string;
+  category: {
+    id: string;
+    name: string;
+  };
+  branch: {
+    id: string;
+    name: string;
+  };
+  baseIngredient: number[];
+  productVariant: string;
+}
+
+interface IModal {
+  setProductData: (prev: ProductData) => void;
+  isOpen: boolean;
+  toggle: () => void;
+}
+
+interface Stock {
+  id: string;
+  name: string;
+}
+
+interface BaseIngredient {
+  stock: Stock;
+  quantity: number;
+}
+
+const ChooseIngredients = ({ isOpen, toggle, setProductData }: IModal) => {
+  const [baseIngredients, setBaseIngredients] = useState<BaseIngredient[]>([
     {
       stock: {
         id: "",
         name: "",
       },
-      quantity: "",
+      quantity: 0,
     },
   ]);
 

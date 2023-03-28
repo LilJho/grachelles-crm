@@ -5,7 +5,7 @@ import TextField from "@/components/UI/Inputs/TextField";
 import Modal from "@/components/UI/Modal/Modal";
 import TextRadioInput from "@/components/UI/Radio/TextRadioInput";
 import SelectField from "@/components/UI/Selects/SelectField";
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import useFetchData from "hooks/useFetchData";
 import { ProductsResponse } from "types/pocketbase-types";
 import { Collections } from "types/pocketbase-types";
@@ -16,8 +16,29 @@ import ChooseIngredients from "../ingredientForm/ChooseIngredients";
 import { pb } from "lib/database/pocketbase";
 import ChooseProductVariants from "../productVariants/ChooseProductVariants";
 
-const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
-  const [productData, setProductData] = useState({
+interface IModal {
+  isOpen: boolean;
+  toggle: () => {};
+  mode: string;
+}
+
+interface ProductData {
+  name: string;
+  type: string;
+  category: {
+    id: string;
+    name: string;
+  };
+  branch: {
+    id: string;
+    name: string;
+  };
+  baseIngredient: number[];
+  productVariant: string;
+}
+
+const ProductForm = ({ isOpen, toggle, mode = "add" }: IModal) => {
+  const [productData, setProductData] = useState<ProductData>({
     name: "",
     type: "",
     category: {
@@ -35,11 +56,11 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
   const [showChooseForm, toggleChooseForm] = useToggle();
   const [showProductVar, toggleProductVar] = useToggle();
 
-  const handleChange = (key, value) => {
+  const handleChange = (key: string, value: string) => {
     setProductData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleChangeNested = (key, value) => {
+  const handleChangeNested = (key: string, value: any) => {
     setProductData({
       ...productData,
       [key]: {
@@ -60,7 +81,7 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
     <h1>Loading...</h1>;
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     const data = {
@@ -106,7 +127,9 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
             label="Type"
             options={["drink", "food"]}
             size="sm"
-            onChange={(e) => handleChange("type", e.target.value)}
+            onChange={(e: any) =>
+              handleChange("type", e.target.value as string)
+            }
           />
           <ComboBox
             data={Branches}
