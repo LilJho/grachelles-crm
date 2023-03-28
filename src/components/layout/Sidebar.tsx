@@ -39,7 +39,7 @@ const SidebarContent = () => {
         <NavLink href="/branch">Branch</NavLink>
         <NavLink href="/staff">Staff</NavLink>
         <NavLink href="/account">Accounts</NavLink>
-        <NavLink href="/settings">Settings</NavLink>
+        {/* <NavLink href="/settings">Settings</NavLink> */}
         <LogoutLink />
       </ul>
     </>

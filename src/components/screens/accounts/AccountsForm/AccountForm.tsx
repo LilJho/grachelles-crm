@@ -199,9 +199,9 @@ const AccountForm = ({
           {userRoles.map((item) => (
             <div
               key={item.name}
-              className="flex items-center justify-between mb-1"
+              className="flex items-center justify-between mb-1.5"
             >
-              <span>{item.name}</span>
+              <span className="capitalize">{item.name}</span>
               <ToggleSwitch
                 enabled={item.isSelected}
                 toggle={() => toggleRole(item.name)}
@@ -216,7 +216,7 @@ const AccountForm = ({
               key={item.id}
               className="flex items-center justify-between mb-1"
             >
-              <span>{item.name}</span>
+              <span className="capitalize">{item.name}</span>
               <ToggleSwitch
                 enabled={item.isSelected}
                 toggle={() => toggleBranch(item.id)}
