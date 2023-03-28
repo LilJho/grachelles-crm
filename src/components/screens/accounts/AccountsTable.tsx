@@ -6,16 +6,17 @@ import Table, { TableColumn, TableRow } from "@/components/UI/Table/Table";
 import useDeleteRecord from "hooks/useDeleteRecord";
 import useTableHook from "hooks/useTableHook";
 import React from "react";
-import { BranchesResponse, Collections } from "types/pocketbase-types";
+import {
+  BranchesResponse,
+  Collections,
+  EmployeeResponse,
+  UsersResponse,
+} from "types/pocketbase-types";
 import useToggle from "hooks/useToggle";
-import EditBranchForm from "./BranchForm/EditBranchForm";
+import { IAccounts } from "types/global-types";
+import EditAccount from "./AccountsForm/EditAccount";
 
-interface IStoreBranchProps {
-  data: BranchesResponse[];
-  isLoading: boolean;
-}
-
-const StoreBranchTable = ({ data, isLoading }: IStoreBranchProps) => {
+const AccountsTable = ({ data = [], isLoading = false }: IAccounts) => {
   const {
     currentItems,
     pageCount,
@@ -50,10 +51,10 @@ const StoreBranchTable = ({ data, isLoading }: IStoreBranchProps) => {
         setShowCount={setShowCount}
         query={query}
         setQuery={setQuery}
-        label="Store Branches List"
+        label="Users Account List"
       >
         <Table
-          header={["Branch Name", "Actions"]}
+          header={["Username", "Email", "Name", "Roles", "Branch", "Actions"]}
           data={currentItems}
           query={query}
           isLoading={isLoading}
@@ -61,7 +62,24 @@ const StoreBranchTable = ({ data, isLoading }: IStoreBranchProps) => {
           {currentItems?.map((val) => {
             return (
               <TableRow key={val.id}>
+                <TableColumn>{val.username}</TableColumn>
+                <TableColumn>{val.email}</TableColumn>
                 <TableColumn>{val.name}</TableColumn>
+                <TableColumn>
+                  <div className="flex gap-1">
+                    {val.roles.map((val) => (
+                      <span
+                        key={val}
+                        className="text-xs p-1 bg-gray-200 text-gray-800 rounded-sm capitalize"
+                      >
+                        {val}
+                      </span>
+                    ))}
+                  </div>
+                </TableColumn>
+                <TableColumn>
+                  {val.expand.branch.map((val) => val.name).join(", ")}
+                </TableColumn>
                 <TableColumn>
                   <div className="flex items-center gap-4">
                     <Button size="xs" onClick={() => handleGetData(val)}>
@@ -90,7 +108,7 @@ const StoreBranchTable = ({ data, isLoading }: IStoreBranchProps) => {
         />
       </DisplayContainer>
       {showEditForm && (
-        <EditBranchForm
+        <EditAccount
           isOpen={showEditForm}
           toggle={toggleEditForm}
           initialValues={getData as any}
@@ -109,4 +127,4 @@ const StoreBranchTable = ({ data, isLoading }: IStoreBranchProps) => {
   );
 };
 
-export default StoreBranchTable;
+export default AccountsTable;
