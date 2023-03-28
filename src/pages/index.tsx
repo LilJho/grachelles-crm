@@ -11,7 +11,7 @@ import {
 } from "types/pocketbase-types";
 import dayjs from "dayjs";
 import RecentTransactions from "@/components/screens/dashboard/RecentTransactions";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SelectBranch from "@/components/UI/SelectBranch";
 
 const CURRENT_DATETIME = dayjs().format("YYYY-MM-DD");

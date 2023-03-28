@@ -12,6 +12,7 @@ import { Collections } from "types/pocketbase-types";
 import ComboBox from "@/components/UI/Selects/ComboBox";
 import { HiPlus } from "react-icons/hi";
 import useToggle from "hooks/useToggle";
+
 import ChooseIngredients from "../../ingredients/ingredientForm/ChooseIngredients";
 import { pb } from "lib/database/pocketbase";
 
@@ -33,7 +34,6 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
 
   const handleChange = (key, value) => {
     setProductData((prev) => ({ ...prev, [key]: value }));
-    console.log(value);
   };
 
   const handleChangeNested = (key, value) => {
@@ -49,6 +49,7 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
   const { data: CategoryData, isLoading: CategoryIsLoading } = useFetchData({
     collectionName: Collections.Categories,
   });
+
   const { data: Branches, isLoading: BranchesIsLoading } = useFetchData({
     collectionName: Collections.Branches,
   });
@@ -78,12 +79,12 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <ComboBox
           data={CategoryData}
-          objKey={"name"}
+          objKey="name"
           label="Category"
           size="sm"
           fullWidth
           value={productData.category}
-          onChange={(value) => handleChangeNested("category", value)}
+          onChange={(e) => handleChange("category", e)}
         />
         <TextField
           value={productData.name}
@@ -124,9 +125,9 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
           Add Product
         </Button>
       </form>
-      {showChooseForm && (
+      {/* {showChooseForm && (
         <ChooseIngredients isOpen={showChooseForm} toggle={toggleChooseForm} />
-      )}
+      )} */}
     </Modal>
   );
 };

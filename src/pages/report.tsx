@@ -30,7 +30,7 @@ const ReportPage = () => {
   const { data: CashierSalesData, isLoading: CashierSalesLoading } =
     useFetchData<CashierSalesResponse>({
       collectionName: Collections.CashierSales,
-      expand: "user",
+      expand: "user.employee_data",
     });
 
   return (

@@ -49,13 +49,6 @@ const InventoryForm = ({
     setFormData((prev: any) => ({ ...prev, [key]: val }));
   };
 
-  const handleKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>
-  ): void => {
-    if (event.key !== "Backspace" && isNaN(parseInt(event.key, 10))) {
-      event.preventDefault();
-    }
-  };
 
   return (
     <Modal

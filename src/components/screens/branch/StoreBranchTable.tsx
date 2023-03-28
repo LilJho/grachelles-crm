@@ -7,6 +7,8 @@ import useDeleteRecord from "hooks/useDeleteRecord";
 import useTableHook from "hooks/useTableHook";
 import React from "react";
 import { BranchesResponse, Collections } from "types/pocketbase-types";
+import useToggle from "./../../../../hooks/useToggle";
+import EditBranchForm from "./BranchForm/EditBranchForm";
 
 interface IStoreBranchProps {
   data: BranchesResponse[];
@@ -35,6 +37,12 @@ const StoreBranchTable = ({ data, isLoading }: IStoreBranchProps) => {
     handleSubmitDeleteData,
   } = useDeleteRecord(Collections.Branches);
 
+  const [showEditForm, toggleEditForm] = useToggle();
+  const handleGetData = (val: any) => {
+    toggleEditForm();
+    setGetData(val);
+  };
+
   return (
     <>
       <DisplayContainer
@@ -56,10 +64,7 @@ const StoreBranchTable = ({ data, isLoading }: IStoreBranchProps) => {
                 <TableColumn>{val.name}</TableColumn>
                 <TableColumn>
                   <div className="flex items-center gap-4">
-                    <Button
-                      size="xs"
-                      //   onClick={() => handleGetDeleteData(val)}
-                    >
+                    <Button size="xs" onClick={() => handleGetData(val)}>
                       Edit
                     </Button>
                     <Button
@@ -84,13 +89,13 @@ const StoreBranchTable = ({ data, isLoading }: IStoreBranchProps) => {
           forcePage={pageNumber}
         />
       </DisplayContainer>
-      {/* {showEditForm && (
-        <EditInventory
+      {showEditForm && (
+        <EditBranchForm
           isOpen={showEditForm}
           toggle={toggleEditForm}
-          initialValue={getData as any}
+          initialValues={getData as any}
         />
-      )}*/}
+      )}
       {showDelete && (
         <DeleteModal
           isOpen={showDelete}
