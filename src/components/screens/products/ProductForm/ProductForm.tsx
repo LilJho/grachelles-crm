@@ -12,8 +12,9 @@ import { Collections } from "types/pocketbase-types";
 import ComboBox from "@/components/UI/Selects/ComboBox";
 import { HiPlus } from "react-icons/hi";
 import useToggle from "hooks/useToggle";
-import ChooseIngredients from "../../ingredients/ingredientForm/ChooseIngredients";
+import ChooseIngredients from "../ingredientForm/ChooseIngredients";
 import { pb } from "lib/database/pocketbase";
+import ChooseProductVariants from "../productVariants/ChooseProductVariants";
 
 const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
   const [productData, setProductData] = useState({
@@ -28,9 +29,11 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
       name: "",
     },
     baseIngredient: [],
+    productVariant: "",
   });
 
   const [showChooseForm, toggleChooseForm] = useToggle();
+  const [showProductVar, toggleProductVar] = useToggle();
 
   const handleChange = (key, value) => {
     setProductData((prev) => ({ ...prev, [key]: value }));
@@ -66,6 +69,7 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
       branch: productData.branch.id,
       product_type: productData.type,
       base_ingredients: productData.baseIngredient,
+      product_variants: productData.productVariant,
     };
 
     const record = await pb.collection("products").create(data);
@@ -124,7 +128,17 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
         >
           Choose Base Ingredients
         </Button>
-        <Button type="submit" size="sm" className="mt-2" fullWidth>
+        <Button
+          color="blue"
+          icon={<HiPlus />}
+          size="sm"
+          className="mt-2"
+          fullWidth
+          onClick={toggleProductVar}
+        >
+          Choose Product Variants
+        </Button>
+        <Button type="submit" size="sm" className="mt-10" fullWidth>
           Done
         </Button>
       </form>
@@ -133,6 +147,13 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
           setProductData={setProductData}
           isOpen={showChooseForm}
           toggle={toggleChooseForm}
+        />
+      )}
+      {showProductVar && (
+        <ChooseProductVariants
+          setProductData={setProductData}
+          isOpen={showProductVar}
+          toggle={toggleProductVar}
         />
       )}
     </Modal>
