@@ -1,4 +1,5 @@
 import useCreateData from "hooks/useCreateData";
+import useUpdateData from "hooks/useUpdateData";
 import React, { useState } from "react";
 import { Collections } from "types/pocketbase-types";
 import AccountForm from "./AccountForm";
@@ -22,12 +23,13 @@ const EditAccount = ({ isOpen, toggle, initialValues }: IBrachFormProps) => {
   };
   const [formData, setFormData] = useState(defaultValue);
 
-  const handleFormSubmit = useCreateData({
-    Collections: Collections.Branches,
+  const handleFormSubmit = useUpdateData({
+    Collections: Collections.Users,
+    id: initialValues.id,
     data: formData,
     toggle,
     setFormData,
-    defaultValue: {},
+    defaultValue: defaultValue,
   });
 
   return (

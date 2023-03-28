@@ -22,7 +22,7 @@ const AddAccounts = ({ isOpen, toggle }: IBrachFormProps) => {
   const [formData, setFormData] = useState(defaultValue);
 
   const handleFormSubmit = useCreateData({
-    Collections: Collections.Branches,
+    Collections: Collections.Users,
     data: formData,
     toggle,
     setFormData,
