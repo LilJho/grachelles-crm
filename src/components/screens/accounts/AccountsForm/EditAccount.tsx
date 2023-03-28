@@ -11,15 +11,16 @@ interface IBrachFormProps {
 }
 
 const EditAccount = ({ isOpen, toggle, initialValues }: IBrachFormProps) => {
+  console.log(initialValues);
   const defaultValue = {
+    name: initialValues.name,
     username: initialValues.username,
     email: initialValues.email,
-    emailVisibility: true,
     password: "",
     passwordConfirm: "",
-    roles: [],
-    branch: [],
-    employee_data: "",
+    roles: initialValues.roles,
+    branch: initialValues.branch,
+    employee_data: initialValues.employee_data,
   };
   const [formData, setFormData] = useState(defaultValue);
 
@@ -40,6 +41,7 @@ const EditAccount = ({ isOpen, toggle, initialValues }: IBrachFormProps) => {
       setFormData={setFormData}
       onSubmit={handleFormSubmit.mutate}
       isLoading={handleFormSubmit.isLoading}
+      mode="edit"
     />
   );
 };
