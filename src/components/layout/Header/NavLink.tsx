@@ -11,6 +11,7 @@ import {
   RiSettings4Line,
   RiLogoutBoxLine,
   RiAccountBoxLine,
+  RiBookReadLine,
 } from "react-icons/ri";
 import { HiOutlineBuildingStorefront } from "react-icons/hi2";
 
@@ -23,6 +24,7 @@ const Icon = {
   "/": <RiDashboardLine />,
   "/report": <RiFundsBoxLine />,
   "/inventory": <RiArchiveLine />,
+  "/categories": <RiBookReadLine />,
   "/products": <RiShoppingBag2Line />,
   "/expenses": <RiMoneyDollarCircleLine />,
   "/staff": <RiUser6Line />,

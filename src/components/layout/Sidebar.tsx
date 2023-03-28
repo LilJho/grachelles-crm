@@ -34,6 +34,7 @@ const SidebarContent = () => {
         <NavLink href="/">Dashboard</NavLink>
         <NavLink href="/report">Report</NavLink>
         <NavLink href="/inventory">Inventory</NavLink>
+        <NavLink href="/categories">Categories</NavLink>
         <NavLink href="/products">Products</NavLink>
         <NavLink href="/expenses">Expenses</NavLink>
         <NavLink href="/branch">Branch</NavLink>

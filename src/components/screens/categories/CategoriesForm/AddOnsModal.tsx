@@ -12,31 +12,31 @@ import { Collections } from "types/pocketbase-types";
 interface IModal {
   isOpen: boolean;
   toggle: () => void;
-  setProductData: (product: any) => void;
+  setData: (product: any) => void;
   setSelectedRows: (row: any) => void;
   selectedRows: any[];
 }
 
-const ProductsVariantModal = ({
+const AddOnsModal = ({
   isOpen,
   toggle,
-  setProductData,
+  setData,
   selectedRows,
   setSelectedRows,
 }: IModal) => {
-  const { data: variantsData, isLoading: variantsLoading } = useFetchData({
-    collectionName: Collections.ProductVariants,
+  const { data: addOnsData } = useFetchData({
+    collectionName: Collections.AddOns,
   });
 
   const [query, setQuery] = useState("");
   const debouncedValue = useDebounce<string>(query, 500);
 
-  const filteredVariants = searchFilter(variantsData, debouncedValue);
+  const filteredVariants = searchFilter(addOnsData, debouncedValue);
 
   const handleSaveSelection = () => {
-    setProductData((prev: any) => ({
+    setData((prev: any) => ({
       ...prev,
-      product_variants: selectedRows.map((val: { id: string }) => val.id),
+      add_ons: selectedRows.map((val: { id: string }) => val.id),
     }));
     toggle();
   };
@@ -45,7 +45,7 @@ const ProductsVariantModal = ({
     <Modal
       isOpen={isOpen}
       toggle={toggle}
-      title="Add Product Variant"
+      title="Add New Add Ons"
       closeButton
       maxWidth="max-w-3xl"
       titleSize="sm"
@@ -60,7 +60,7 @@ const ProductsVariantModal = ({
             onChange={(e) => setQuery(e.target.value)}
           />
           <Button size="sm" variant="light" color="blue">
-            New Variant
+            New Add Ons
           </Button>
         </div>
         <label className="flex items-center justify-end gap-2 -mb-2 max-w-max ml-auto cursor-pointer">
@@ -89,19 +89,13 @@ const ProductsVariantModal = ({
                     onChange={() => handleSelectData(val, setSelectedRows)}
                   />
 
-                  <span className="capitalize">{`${val.category}${
-                    val.parent_name ? " - " + val.parent_name : ""
-                  }${val.name ? " - " + val.name : ""}${
-                    val.size ? " - " + val.size : ""
-                  }${val.type ? " - " + val.type : ""}${
-                    val.sinkers ? " - " + val.sinkers : ""
-                  }`}</span>
+                  <span className="capitalize">{val.name}</span>
                 </label>
               );
             })
           ) : (
             <div className="flex-1 my-auto font-semibold text-center text-gray-400 flex items-center justify-center">
-              <h4>No product variants available</h4>
+              <h4>No add ons available</h4>
             </div>
           )}
         </div>
@@ -118,4 +112,4 @@ const ProductsVariantModal = ({
   );
 };
 
-export default ProductsVariantModal;
+export default AddOnsModal;

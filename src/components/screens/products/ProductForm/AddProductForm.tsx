@@ -1,15 +1,19 @@
 import useCreateData from "hooks/useCreateData";
-import React, { useState } from "react";
-import { Collections } from "types/pocketbase-types";
+import { useState } from "react";
+import {
+  BranchesRecord,
+  BranchesResponse,
+  Collections,
+} from "types/pocketbase-types";
 import ProductForm from "./ProductForm";
-
 
 interface IFormProps {
   isOpen: boolean;
   toggle: () => void;
+  currentBranch: BranchesResponse;
 }
 
-const AddProductForm = ({ isOpen, toggle }: IFormProps) => {
+const AddProductForm = ({ isOpen, toggle, currentBranch }: IFormProps) => {
   const defaultValue = {
     parent_name: "",
     product_type: "drink",
@@ -17,10 +21,7 @@ const AddProductForm = ({ isOpen, toggle }: IFormProps) => {
       id: "",
       name: "",
     },
-    branch: {
-      id: "",
-      name: "",
-    },
+    branch: currentBranch,
     base_ingredient: [],
     product_variants: [],
   };
@@ -52,9 +53,9 @@ const AddProductForm = ({ isOpen, toggle }: IFormProps) => {
       setFormData={setFormData}
       onSubmit={handleFormSubmit.mutate}
       isLoading={handleFormSubmit.isLoading}
+      currentBranch={currentBranch}
     />
   );
-
 };
 
 export default AddProductForm;
