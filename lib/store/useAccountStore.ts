@@ -28,6 +28,7 @@ interface Account extends BaseRecord {
   avatar: string;
   branch: Array<string>;
   emailVisibility: boolean;
+  email: string;
   employee_data: string;
   name: string;
   roles: Array<string>;
@@ -89,12 +90,13 @@ const useAccountStore = create<AccountStore>((set) => ({
         error: null,
       });
 
-      const records = await pb.collection("users").getFullList({
+      const records = (await pb.collection("users").getFullList({
         sort: "-created",
         expand: "branch,employee_data",
-      });
-      console.log(records);
+      })) as Account[];
+
       set({
+        accounts: records,
         error: null,
         success: true,
       });

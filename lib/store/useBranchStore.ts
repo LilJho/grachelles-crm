@@ -54,11 +54,12 @@ const useBranchStore = create<BranchStore>((set) => ({
         error: null,
       });
 
-      const records = await pb.collection("branches").getFullList({
+      const records = (await pb.collection("branches").getFullList({
         sort: "-created",
-      });
-      console.log(records);
+      })) as Branch[];
+
       set({
+        branches: records,
         error: null,
         success: true,
       });

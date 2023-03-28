@@ -63,11 +63,12 @@ const useExpenseStore = create<ExpenseStore>((set) => ({
         error: null,
       });
 
-      const records = await pb.collection("expenses").getFullList({
+      const records = (await pb.collection("expenses").getFullList({
         sort: "-created",
-      });
-      console.log(records);
+      })) as Expense[];
+
       set({
+        expenses: records,
         error: null,
         success: true,
       });
