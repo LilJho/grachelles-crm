@@ -13,10 +13,10 @@ import ComboBox from "@/components/UI/Selects/ComboBox";
 import { HiPlus } from "react-icons/hi";
 import useToggle from "hooks/useToggle";
 import ChooseIngredients from "../../ingredients/ingredientForm/ChooseIngredients";
+import { pb } from "lib/database/pocketbase";
 
 const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
   const [productData, setProductData] = useState({
-    id: "",
     name: "",
     type: "",
     category: {
@@ -30,13 +30,6 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
   });
 
   const [showChooseForm, toggleChooseForm] = useToggle();
-
-  const [baseIngredients, setBaseIngredients] = useState([
-    {
-      id: "",
-      name: "",
-    },
-  ]);
 
   const handleChange = (key, value) => {
     setProductData((prev) => ({ ...prev, [key]: value }));
@@ -52,9 +45,6 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
       },
     });
   };
-  // const handleChangeNestedArray = (key, value) => {
-
-  // };
 
   const { data: CategoryData, isLoading: CategoryIsLoading } = useFetchData({
     collectionName: Collections.Categories,
@@ -67,14 +57,25 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
     <h1>Loading...</h1>;
   }
 
+  const handleSubmit = async () => {
+    const data = {
+      parent_name: productData.name,
+      category: productData.category.id,
+      branch: productData.branch.id,
+      product_type: "drink",
+    };
+
+    const record = await pb.collection("products").create(data);
+  };
+
   return (
     <Modal
       isOpen={isOpen}
       toggle={toggle}
-      title={"Choose Base-Ingredients"}
+      title={FormMode[mode].title}
       closeButton
     >
-      <form className="flex flex-col gap-6" onSubmit={onSubmit}>
+      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         <ComboBox
           data={CategoryData}
           objKey={"name"}
@@ -97,7 +98,7 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
             label="Type"
             options={["drink", "food"]}
             size="sm"
-            onChange={(value) => handleChange("type", value)}
+            onChange={(e) => handleChange("type", e.target.value)}
           />
           <ComboBox
             data={Branches}
@@ -108,16 +109,6 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
             value={productData.branch}
             onChange={(value) => handleChangeNested("branch", value)}
           />
-
-          {/* <ComboBox
-            data={BaseIngredients}
-            objKey="name"
-            label="Branch"
-            size="sm"
-            fullWidth
-            value={productData.branch}
-            onChange={(value) => handleChangeNested("branch", value)}
-          /> */}
         </div>
         <Button
           color="blue"
