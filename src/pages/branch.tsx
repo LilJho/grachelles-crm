@@ -8,6 +8,9 @@ import { HiPlus } from "react-icons/hi";
 import StoreBranchTable from "@/components/screens/branch/StoreBranchTable";
 import useFetchData from "hooks/useFetchData";
 import { BranchesResponse, Collections } from "types/pocketbase-types";
+import useToggle from "./../../hooks/useToggle";
+import BranchForm from "@/components/screens/branch/BranchForm/BranchForm";
+import AddBranchForm from "@/components/screens/branch/BranchForm/AddBranchForm";
 
 const BranchPage = () => {
   const { getBranches, branches } = useBranchStore();
@@ -24,11 +27,18 @@ const BranchPage = () => {
       collectionName: Collections.Branches,
     });
 
+  const [showAddBranch, toggleAddBranch] = useToggle();
+
   return (
     <MainLayout>
       <PageTitle title="Store Branches">
         <div className="flex items-center justify-end gap-6 flex-1">
-          <Button size="sm" color="blue" icon={<HiPlus />}>
+          <Button
+            size="sm"
+            color="blue"
+            icon={<HiPlus />}
+            onClick={toggleAddBranch}
+          >
             Add New Branch
           </Button>
         </div>
@@ -39,6 +49,9 @@ const BranchPage = () => {
           isLoading={BranchesLoading}
         />
       </div>
+      {showAddBranch && (
+        <AddBranchForm isOpen={showAddBranch} toggle={toggleAddBranch} />
+      )}
     </MainLayout>
   );
 };

@@ -1,11 +1,13 @@
 import Button from "@/components/UI/Buttons/Button";
 import DisplayContainer from "@/components/UI/DisplayContainer";
+import DeleteModal from "@/components/UI/Modal/DeleteModal";
 import Pagination from "@/components/UI/Pagination";
 import Table, { TableColumn, TableRow } from "@/components/UI/Table/Table";
+import useDeleteRecord from "hooks/useDeleteRecord";
 import useTableHook from "hooks/useTableHook";
 import React from "react";
 import { ICashierSalesProps } from "types/global-types";
-import { CashierSalesRecord } from "types/pocketbase-types";
+import { CashierSalesRecord, Collections } from "types/pocketbase-types";
 
 const CashierLogTable = ({ data, isLoading }: ICashierSalesProps) => {
   const {
@@ -19,6 +21,14 @@ const CashierLogTable = ({ data, isLoading }: ICashierSalesProps) => {
     showCount,
     query,
   } = useTableHook(data);
+
+  const {
+    showDelete,
+    toggleDelete,
+    handleGetDeleteData,
+    getData,
+    handleSubmitDeleteData,
+  } = useDeleteRecord(Collections.CashierSales);
 
   return (
     <>
@@ -40,12 +50,11 @@ const CashierLogTable = ({ data, isLoading }: ICashierSalesProps) => {
           query={query}
           isLoading={isLoading}
         >
-          {currentItems?.map((val) => {
-            console.log(val.expand);
+          {currentItems?.map((val: any) => {
             return (
               <TableRow key={val.id}>
                 <TableColumn className="capitalize">
-                  {val.expand.user?.name}
+                  {val.expand.user.expand.employee_data?.name}
                 </TableColumn>
                 <TableColumn className="capitalize">
                   {val.sales_by_cashier}
@@ -62,9 +71,9 @@ const CashierLogTable = ({ data, isLoading }: ICashierSalesProps) => {
                     <Button
                       size="xs"
                       color="red"
-                      //   onClick={() => handleGetDeleteData(val)}
+                      onClick={() => handleGetDeleteData(val)}
                     >
-                      Delete Order
+                      Delete Record
                     </Button>
                   </div>
                 </TableColumn>
@@ -81,15 +90,17 @@ const CashierLogTable = ({ data, isLoading }: ICashierSalesProps) => {
           forcePage={pageNumber}
         />
       </DisplayContainer>
-      {/* {showDelete && (
+      {showDelete && (
         <DeleteModal
           isOpen={showDelete}
           toggle={toggleDelete}
-          deleteRecord={getData?.id as string}
+          deleteRecord={
+            getData.expand.user.expand.employee_data?.name as string
+          }
           onClick={handleSubmitDeleteData.mutate}
           isLoading={handleSubmitDeleteData.isLoading}
         />
-      )} */}
+      )}
     </>
   );
 };
