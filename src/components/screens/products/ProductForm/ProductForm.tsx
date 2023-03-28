@@ -82,6 +82,7 @@ const ProductForm = ({
           fullWidth
           value={formData.category}
           onChange={(e) => handleChange("category", e)}
+          required
         />
         <SelectTextField
           value={formData.parent_name}
@@ -91,6 +92,7 @@ const ProductForm = ({
           data={getParentName}
           onChange={(e) => handleChange("parent_name", e.target.value)}
           onSelect={(e) => handleChange("parent_name", e)}
+          required
         />
         <div className="flex items-center justify-between">
           <TextRadioInput
@@ -108,6 +110,7 @@ const ProductForm = ({
             fullWidth
             value={formData.branch}
             onChange={(e) => handleChange("branch", e)}
+            required
           />
         </div>
         <div className="flex flex-col p-3 border border-gray-300 rounded-md text-sm">
