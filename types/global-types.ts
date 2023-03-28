@@ -84,3 +84,14 @@ export interface IExpandedExpenses extends ExpensesResponse {
     user: UsersResponse;
   };
 }
+
+export interface IRecentTransaction {
+  data: IExpandedRecent[];
+  isLoading: boolean;
+}
+
+export interface IExpandedRecent extends OrdersResponse {
+  expand: {
+    order_items: OrderItemsResponse[];
+  };
+}

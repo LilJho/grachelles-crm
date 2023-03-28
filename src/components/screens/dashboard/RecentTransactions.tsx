@@ -3,12 +3,8 @@ import Pagination from "@/components/UI/Pagination";
 import Table, { TableColumn, TableRow } from "@/components/UI/Table/Table";
 import useTableHook from "hooks/useTableHook";
 import React from "react";
-import { OrdersResponse } from "types/pocketbase-types";
-
-interface IRecentTransaction {
-  data: OrdersResponse[];
-  isLoading: boolean;
-}
+import { IExpandedRecent, IRecentTransaction } from "types/global-types";
+import { OrderItemsResponse, OrdersResponse } from "types/pocketbase-types";
 
 const RecentTransactions = ({ data, isLoading }: IRecentTransaction) => {
   const {
@@ -23,6 +19,21 @@ const RecentTransactions = ({ data, isLoading }: IRecentTransaction) => {
     query,
   } = useTableHook(data);
 
+  const getOnlyName = (order_items: OrderItemsResponse[]) => {
+    const parentNameCounts = order_items
+      .flatMap((x) => x.parent_name)
+      .reduce((acc: any, name) => {
+        if (!acc[name]) {
+          acc[name] = 1;
+        } else {
+          acc[name]++;
+        }
+        return acc;
+      }, {});
+    const entries = Object.entries(parentNameCounts);
+    return entries;
+  };
+
   return (
     <DisplayContainer
       showCount={showCount}
@@ -33,6 +44,7 @@ const RecentTransactions = ({ data, isLoading }: IRecentTransaction) => {
     >
       <Table
         header={[
+          "Product",
           "Payment Method",
           "Service Method",
           "Total Drinks",
@@ -47,9 +59,16 @@ const RecentTransactions = ({ data, isLoading }: IRecentTransaction) => {
         query={query}
         isLoading={isLoading}
       >
-        {currentItems?.map((val: OrdersResponse) => {
+        {currentItems?.map((val: IExpandedRecent) => {
           return (
             <TableRow key={val.id}>
+              <TableColumn className="capitalize">
+                {getOnlyName(val.expand.order_items)
+                  .map(([key, value]) => {
+                    return `${key} x${value}`;
+                  })
+                  .join(", ")}
+              </TableColumn>
               <TableColumn className="capitalize">
                 {val.payment_method}
               </TableColumn>
