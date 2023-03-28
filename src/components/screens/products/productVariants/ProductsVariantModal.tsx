@@ -6,8 +6,10 @@ import { handleSelectAll, handleSelectData } from "helper/checkBoxSelect";
 import { searchFilter } from "helper/searchFilter";
 import useDebounce from "hooks/useDebounce";
 import useFetchData from "hooks/useFetchData";
+import useToggle from "hooks/useToggle";
 import React, { useState } from "react";
 import { Collections } from "types/pocketbase-types";
+import AddNewVariant from "./AddNewVariant";
 
 interface IModal {
   isOpen: boolean;
@@ -41,6 +43,8 @@ const ProductsVariantModal = ({
     toggle();
   };
 
+  const [showVariantForm, toggleVariantForm] = useToggle();
+
   return (
     <Modal
       isOpen={isOpen}
@@ -59,7 +63,12 @@ const ProductsVariantModal = ({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <Button size="sm" variant="light" color="blue">
+          <Button
+            size="sm"
+            variant="light"
+            color="blue"
+            onClick={toggleVariantForm}
+          >
             New Variant
           </Button>
         </div>
@@ -114,6 +123,9 @@ const ProductsVariantModal = ({
           </Button>
         </div>
       </div>
+      {showVariantForm && (
+        <AddNewVariant isOpen={showVariantForm} toggle={toggleVariantForm} />
+      )}
     </Modal>
   );
 };

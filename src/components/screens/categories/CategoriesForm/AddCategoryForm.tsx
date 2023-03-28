@@ -21,7 +21,6 @@ const AddCategoryForm = ({
     add_ons: [],
   });
 
-  console.log({ formData });
   const handleFormSubmit = useCreateData({
     Collections: Collections.Categories,
     data: { ...formData, branch: (formData as any).branch.id },

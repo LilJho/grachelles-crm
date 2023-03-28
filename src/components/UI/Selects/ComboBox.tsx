@@ -6,8 +6,8 @@ import Label from "../Inputs/Label";
 type IComboBoxProps = {
   fullWidth?: boolean;
   size?: "default" | "sm" | "lg";
-  data?: { id: string; [key: string]: any }[];
-  objKey: string;
+  data?: { id: string; [key: string]: any }[] | any;
+  objKey?: string;
   required?: boolean;
   label?: string;
   value?: { id: string; [key: string]: any };
@@ -29,7 +29,7 @@ const ComboBox: FC<IComboBoxProps> = ({
   const filteredData =
     query === ""
       ? data
-      : data.filter((val) =>
+      : data.filter((val: any) =>
           val[objKey]
             .toLowerCase()
             .replace(/\s+/g, "")
@@ -82,7 +82,7 @@ const ComboBox: FC<IComboBoxProps> = ({
                   Nothing found.
                 </div>
               ) : (
-                filteredData.map((val) => (
+                filteredData.map((val: any) => (
                   <Combobox.Option
                     key={val.id}
                     className={({ active }) =>
