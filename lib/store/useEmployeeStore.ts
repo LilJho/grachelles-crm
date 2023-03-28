@@ -63,11 +63,12 @@ const useEmployeeStore = create<EmployeeStore>((set) => ({
         error: null,
       });
 
-      const records = await pb.collection("employee").getFullList({
+      const records = (await pb.collection("employee").getFullList({
         sort: "-created",
-      });
-      console.log(records);
+      })) as Employee[];
+
       set({
+        employee: records,
         error: null,
         success: true,
       });
