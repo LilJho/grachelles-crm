@@ -44,7 +44,7 @@ const EmployeeTable = ({ data, isLoading }: IEmployeeProps) => {
         label="Expenses List"
       >
         <Table
-          header={["Branch Name", "Actions"]}
+          header={["Branch Name", "Actions", "Contact", "Address", "Actions"]}
           data={currentItems}
           query={query}
           isLoading={isLoading}
@@ -54,7 +54,6 @@ const EmployeeTable = ({ data, isLoading }: IEmployeeProps) => {
               <TableRow key={val.id}>
                 <TableColumn>{val.name}</TableColumn>
                 <TableColumn>{val.gender}</TableColumn>
-                <TableColumn>{val.birthday}</TableColumn>
                 <TableColumn>{val.contact}</TableColumn>
                 <TableColumn>{val.address}</TableColumn>
                 <TableColumn>
