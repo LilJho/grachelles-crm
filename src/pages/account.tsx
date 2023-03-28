@@ -8,6 +8,10 @@ import AddInventory from "@/components/screens/inventory/InventoryForm/AddInvent
 import Button from "@/components/UI/Buttons/Button";
 import { HiPlus } from "react-icons/hi";
 import InventoryTable from "@/components/screens/inventory/InventoryTable";
+import AccountsTable from "@/components/screens/accounts/AccountsTable";
+import { UsersResponse } from "types/pocketbase-types";
+import { ExpandedUser } from "types/global-types";
+import AddAccounts from "@/components/screens/accounts/AccountsForm/AddAccounts";
 
 const AccountPage = () => {
   const { isLoading, error, success, createAccount, getAccounts, accounts } =
@@ -36,34 +40,15 @@ const AccountPage = () => {
             icon={<HiPlus />}
             onClick={toggleAddForm}
           >
-            Add New Stock
+            Add New User
           </Button>
         </div>
       </PageTitle>
-      <table>
-        <thead>
-          <tr>
-            <td>Username</td>
-            <td>Email</td>
-            <td>Name</td>
-            <td>Roles</td>
-            <td>Branch</td>
-          </tr>
-        </thead>
-        <tbody>
-          {accounts.map((item) => (
-            <tr key={item.id}>
-              <td>{item.username}</td>
-              <td>{item.email}</td>
-              <td>{item.name}</td>
-              <td>{item.roles}</td>
-              <td>{item.branch}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div>
+        <AccountsTable data={accounts as any} />
+      </div>
       {showAddForm && (
-        <AddInventory toggle={toggleAddForm} isOpen={showAddForm} />
+        <AddAccounts toggle={toggleAddForm} isOpen={showAddForm} />
       )}
     </MainLayout>
   );

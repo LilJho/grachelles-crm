@@ -60,3 +60,15 @@ export interface IExpandedEmployeeSalesResponse extends UsersResponse {
     employee_data: EmployeeResponse;
   };
 }
+
+export interface IAccounts {
+  data: ExpandedUser[];
+  isLoading?: boolean;
+}
+
+export interface ExpandedUser extends UsersResponse {
+  expand: {
+    branch: BranchesResponse[];
+    employee_data: EmployeeResponse;
+  };
+}
