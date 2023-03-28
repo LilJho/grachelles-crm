@@ -11,6 +11,7 @@ interface IModalProps {
   className?: string;
   closeButton?: boolean;
   maxWidth?: string;
+  titleSize?: string;
 }
 
 const Modal: FC<IModalProps> = ({
@@ -21,6 +22,7 @@ const Modal: FC<IModalProps> = ({
   className = "",
   closeButton = false,
   maxWidth = "max-w-2xl",
+  titleSize = "text-2xl",
 }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -55,14 +57,20 @@ const Modal: FC<IModalProps> = ({
                   {title !== "" && (
                     <Dialog.Title
                       as="h3"
-                      className="text-2xl font-semibold leading-6 text-gray-900"
+                      className={`${
+                        TitleSize(titleSize)?.title
+                      } font-semibold leading-6 text-gray-900`}
                     >
                       {title}
                     </Dialog.Title>
                   )}
                   {closeButton && (
                     <UnstyledButton onClick={toggle}>
-                      <HiX className="w-6 h-6 text-gray-800" />
+                      <HiX
+                        className={`${
+                          TitleSize(titleSize)?.closeBtn
+                        } text-gray-800`}
+                      />
                     </UnstyledButton>
                   )}
                 </div>
@@ -78,3 +86,15 @@ const Modal: FC<IModalProps> = ({
 };
 
 export default Modal;
+
+const TitleSize = (titleSize = "default") =>
+  ({
+    default: {
+      title: "text-2xl",
+      closeBtn: "w-6 h-6",
+    },
+    sm: {
+      title: "text-xl",
+      closeBtn: "w-5 h-5",
+    },
+  }[titleSize]);
