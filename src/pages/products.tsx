@@ -59,7 +59,7 @@ const ProductsPage = () => {
         />
       </div>
       {showAddForm && (
-        <AddProductForm isOpen={showAddForm} toggle={toggleAddForm} />
+        <AddProductForm isOpen={showAddForm} toggle={toggleAddForm} currentBranch={selectBranch as BranchesResponse}/>
       )}
     </MainLayout>
   );
