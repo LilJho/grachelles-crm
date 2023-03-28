@@ -3,6 +3,7 @@ import isBetween from "dayjs/plugin/isBetween";
 import {
   BranchesResponse,
   CashierSalesResponse,
+  ExpensesResponse,
   OrdersResponse,
 } from "types/pocketbase-types";
 dayjs.extend(isBetween);
@@ -41,6 +42,26 @@ export const filterCashierData = (
 
   let filteredOrders = salesData.filter((order: any) => {
     const formattedTransactionTime = order.datetime.split(" ")[0];
+    const orderDate = dayjs(formattedTransactionTime);
+
+    const isWithinDateRange =
+      startDate && endDate
+        ? orderDate.isBetween(dayjs(startDate), dayjs(endDate), null, "[]")
+        : true;
+    const isWithinBranch = branch ? order.branch === branch : true;
+    return isWithinDateRange && isWithinBranch;
+  });
+  return filteredOrders;
+};
+
+export const filterExpensesData = (
+  filters: IFilterSales,
+  expensesData: ExpensesResponse[]
+) => {
+  const { startDate, endDate, branch } = filters;
+
+  let filteredOrders = expensesData.filter((order: any) => {
+    const formattedTransactionTime = order.transaction_time.split(" ")[0];
     const orderDate = dayjs(formattedTransactionTime);
 
     const isWithinDateRange =

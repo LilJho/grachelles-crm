@@ -15,28 +15,33 @@ import { HiPlus } from "react-icons/hi";
 import useToggle from "hooks/useToggle";
 import AddInventory from "@/components/screens/inventory/InventoryForm/AddInventory";
 import SelectBranch from "@/components/UI/SelectBranch";
+import useSelectBranch from "hooks/useSelectBranch";
 
 const InventoryPage = () => {
-  const [selectBranch, setSelectBranch] = useState<BranchesResponse>();
-
-  const {
-    data: StocksData,
-    isLoading: StocksLoading,
-    refetch,
-  } = useFetchData<StocksRecord>({
-    collectionName: Collections.Stocks,
-    expand: "branch",
-  });
+  const { data: StocksData, isLoading: StocksLoading } =
+    useFetchData<StocksRecord>({
+      collectionName: Collections.Stocks,
+      expand: "branch",
+    });
 
   const [showAddForm, toggleAddForm] = useToggle();
+
+  const { filterData, selectBranch, setSelectBranch, BranchesData } =
+    useSelectBranch();
+
+  const filteredStockData = filterData(
+    StocksData,
+    (item: { branch: string }) => item.branch === selectBranch?.id
+  );
 
   return (
     <MainLayout>
       <PageTitle title="Inventory Record">
         <div className="flex items-center max-w-sm gap-6 flex-1">
           <SelectBranch
+            data={BranchesData as BranchesResponse[]}
             selectBranch={selectBranch as BranchesResponse}
-            setSelectBranch={setSelectBranch}
+            onChange={(e) => setSelectBranch(e)}
           />
           <Button
             size="sm"
@@ -50,7 +55,7 @@ const InventoryPage = () => {
       </PageTitle>
       <div>
         <InventoryTable
-          data={StocksData as IExpandedStocksResponse[]}
+          data={filteredStockData as IExpandedStocksResponse[]}
           isLoading={StocksLoading}
         />
       </div>

@@ -39,6 +39,7 @@ const useFetchData = <T>({
     queryFn: fetchData,
     staleTime: (cache.staleTime as number) * (60 * 1000),
     cacheTime: (cache.staleTime as number) * (60 * 1000),
+    refetchOnWindowFocus: true,
   });
 };
 

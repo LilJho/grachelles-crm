@@ -9,6 +9,7 @@ import {
   CashierSalesResponse,
   UsersResponse,
   EmployeeResponse,
+  ExpensesResponse,
 } from "types/pocketbase-types";
 
 export interface IStoreProps {}
@@ -70,5 +71,16 @@ export interface ExpandedUser extends UsersResponse {
   expand: {
     branch: BranchesResponse[];
     employee_data: EmployeeResponse;
+  };
+}
+
+export interface IExpensesTableProp {
+  data: IExpandedExpenses[];
+  isLoading: boolean;
+}
+
+export interface IExpandedExpenses extends ExpensesResponse {
+  expand: {
+    user: UsersResponse;
   };
 }
