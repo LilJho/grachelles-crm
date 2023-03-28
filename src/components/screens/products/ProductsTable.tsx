@@ -6,17 +6,10 @@ import useTableHook from "hooks/useTableHook";
 import useToggle from "hooks/useToggle";
 import React, { useState } from "react";
 import { IExpandedProductResponse, IProductProps } from "types/global-types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { pb } from "lib/database/pocketbase";
-import {
-  Collections,
-  ProductsRecord,
-  ProductVariantsRecord,
-  ProductVariantsResponse,
-} from "types/pocketbase-types";
-import { toastError, toastSuccess } from "helper/showToast";
+import { Collections } from "types/pocketbase-types";
 import DeleteModal from "../../UI/Modal/DeleteModal";
 import { getUniqueValues } from "helper/getUniqueValues";
+import useDeleteRecord from "hooks/useDeleteRecord";
 
 const ProductsTable = ({ data, isLoading }: IProductProps) => {
   const {
@@ -31,43 +24,16 @@ const ProductsTable = ({ data, isLoading }: IProductProps) => {
     query,
   } = useTableHook(data);
 
-  const queryClient = useQueryClient();
-
   const [showEditForm, toggleEditForm] = useToggle();
-  const [getData, setGetData] = useState<IExpandedProductResponse>();
-  const [showDeleteStock, toggleDeleteStock] = useToggle();
 
-  const handleGetData = (val: IExpandedProductResponse) => {
-    setGetData(val);
-    toggleEditForm();
-  };
-
-  const handleDeleteProduct = (val: IExpandedProductResponse) => {
-    setGetData(val);
-    toggleDeleteStock();
-  };
-
-  const handleSubmitDeleteProduct = useMutation(
-    async () => {
-      try {
-        await pb.collection("products").delete(getData?.id as string);
-      } catch (error) {}
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: [Collections.Products],
-        });
-        toggleDeleteStock();
-        toastSuccess("Product has been deleted!");
-      },
-      onError: () => {
-        toastError(
-          "Something went wrong while processing your request. Please try again!"
-        );
-      },
-    }
-  );
+  const {
+    showDelete,
+    toggleDelete,
+    handleGetDeleteData,
+    getData,
+    setGetData,
+    handleSubmitDeleteData,
+  } = useDeleteRecord(Collections.Products);
 
   return (
     <>
@@ -87,14 +53,14 @@ const ProductsTable = ({ data, isLoading }: IProductProps) => {
           {currentItems?.map((val: IExpandedProductResponse) => {
             return (
               <TableRow key={val.id}>
-                <TableColumn>{val.expand.category.name}</TableColumn>
+                <TableColumn>{val.expand.category?.name}</TableColumn>
                 <TableColumn>{val.parent_name}</TableColumn>
                 <TableColumn>
                   <FlavorComponent
                     product_variants={val.expand.product_variants}
                   />
                 </TableColumn>
-                <TableColumn>{val.expand.branch.name}</TableColumn>
+                <TableColumn>{val.expand.branch?.name}</TableColumn>
                 <TableColumn>
                   <div className="flex items-center gap-4">
                     {/* <Button size="xs" onClick={() => handleGetData(val)}>
@@ -103,7 +69,7 @@ const ProductsTable = ({ data, isLoading }: IProductProps) => {
                     <Button
                       size="xs"
                       color="red"
-                      onClick={() => handleDeleteProduct(val)}
+                      onClick={() => handleGetDeleteData(val)}
                     >
                       Delete
                     </Button>
@@ -129,13 +95,13 @@ const ProductsTable = ({ data, isLoading }: IProductProps) => {
           initialValue={getData as any}
         />
       )} */}
-      {showDeleteStock && (
+      {showDelete && (
         <DeleteModal
-          isOpen={showDeleteStock}
-          toggle={toggleDeleteStock}
+          isOpen={showDelete}
+          toggle={toggleDelete}
           deleteRecord={getData?.parent_name as string}
-          onClick={handleSubmitDeleteProduct.mutate}
-          isLoading={handleSubmitDeleteProduct.isLoading}
+          onClick={handleSubmitDeleteData.mutate}
+          isLoading={handleSubmitDeleteData.isLoading}
         />
       )}
     </>

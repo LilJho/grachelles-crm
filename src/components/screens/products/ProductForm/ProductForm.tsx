@@ -13,68 +13,54 @@ import ComboBox from "@/components/UI/Selects/ComboBox";
 import { HiPlus } from "react-icons/hi";
 import useToggle from "hooks/useToggle";
 import ChooseIngredients from "../ingredientForm/ChooseIngredients";
-import { pb } from "lib/database/pocketbase";
-import ChooseProductVariants from "../productVariants/ChooseProductVariants";
+import ProductsVariantModal from "../productVariants/ProductsVariantModal";
 
-const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
-  const [productData, setProductData] = useState({
-    name: "",
-    type: "",
-    category: {
-      id: "",
-      name: "",
-    },
-    branch: {
-      id: "",
-      name: "",
-    },
-    baseIngredient: [],
-    productVariant: "",
-  });
+interface IFormProps {
+  isOpen: boolean;
+  toggle: () => void;
+  mode?: "add" | "edit";
+  onSubmit: (val: any) => void;
+  isLoading: boolean;
+  formData: any;
+  setFormData: any;
+}
 
+const ProductForm = ({
+  isOpen,
+  toggle,
+  mode = "add",
+  onSubmit = () => {},
+  formData,
+  setFormData,
+}: IFormProps) => {
   const [showChooseForm, toggleChooseForm] = useToggle();
+
   const [showProductVar, toggleProductVar] = useToggle();
 
-  const handleChange = (key, value) => {
-    setProductData((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleChangeNested = (key, value) => {
-    setProductData({
-      ...productData,
-      [key]: {
-        id: value.id,
-        name: value.name,
-      },
-    });
+  const handleChange = (key: any, value: any) => {
+    setFormData((prev: any) => ({ ...prev, [key]: value }));
   };
 
   const { data: CategoryData, isLoading: CategoryIsLoading } = useFetchData({
     collectionName: Collections.Categories,
   });
+
   const { data: Branches, isLoading: BranchesIsLoading } = useFetchData({
     collectionName: Collections.Branches,
   });
 
-  if (CategoryIsLoading && BranchesIsLoading) {
-    <h1>Loading...</h1>;
-  }
+  const { data: productsData } = useFetchData({
+    collectionName: Collections.Products,
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const [selectedRows, setSelectedRows] = useState([]);
 
-    const data = {
-      parent_name: productData.name,
-      category: productData.category.id,
-      branch: productData.branch.id,
-      product_type: productData.type,
-      base_ingredients: productData.baseIngredient,
-      product_variants: productData.productVariant,
-    };
+  console.log({ productsData });
 
-    const record = await pb.collection("products").create(data);
-    toggle();
-  };
+  const getParentName = productsData
+    ?.filter((val: any) => val.category === formData.category.id)
+    .map((val: any) => val.parent_name)
+    .sort();
 
   return (
     <Modal
@@ -83,40 +69,65 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
       title={FormMode[mode].title}
       closeButton
     >
-      <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+      <form className="flex flex-col gap-6" onSubmit={onSubmit}>
         <ComboBox
-          data={CategoryData}
+          data={CategoryData as any}
           objKey={"name"}
           label="Category"
           size="sm"
           fullWidth
-          value={productData.category}
-          onChange={(value) => handleChangeNested("category", value)}
+          value={formData.category}
+          onChange={(e) => handleChange("category", e)}
         />
-        <TextField
-          value={productData.name}
+        <SelectTextField
+          value={formData.parent_name}
           label="Product Name"
           size="sm"
           fullWidth
-          onChange={(e) => handleChange("name", e.target.value)}
+          data={getParentName}
+          onChange={(e) => handleChange("parent_name", e.target.value)}
+          onSelect={(e) => handleChange("parent_name", e)}
         />
         <div className="flex items-center justify-between">
           <TextRadioInput
-            value={productData.type}
+            value={formData.product_type}
             label="Type"
             options={["drink", "food"]}
             size="sm"
-            onChange={(e) => handleChange("type", e.target.value)}
+            onChange={(e: any) => handleChange("product_type", e.target.value)}
           />
           <ComboBox
-            data={Branches}
+            data={Branches as any}
             objKey="name"
             label="Branch"
             size="sm"
             fullWidth
-            value={productData.branch}
-            onChange={(value) => handleChangeNested("branch", value)}
+            value={formData.branch}
+            onChange={(e) => handleChange("branch", e)}
           />
+        </div>
+        <div className="flex flex-col p-3 border border-gray-300 rounded-md text-sm">
+          <Label>Product Variants</Label>
+          <div className="py-4 my-2 border-t border-b border-gray-300">
+            <h6 className="text-gray-400 font-semibold text-center">
+              {formData?.product_variants.length ? (
+                <span className="text-primary-500">
+                  {formData?.product_variants.length} products has been selected
+                </span>
+              ) : (
+                "No products selected"
+              )}
+            </h6>
+          </div>
+          <Button
+            color="blue"
+            icon={<HiPlus />}
+            size="sm"
+            fullWidth
+            onClick={toggleProductVar}
+          >
+            Add Product Variant
+          </Button>
         </div>
         <Button
           color="blue"
@@ -124,36 +135,28 @@ const ProductForm = ({ isOpen, toggle, mode = "add", onSubmit = () => {} }) => {
           size="sm"
           className="mt-2"
           fullWidth
-          onClick={toggleChooseForm}
-        >
-          Choose Base Ingredients
-        </Button>
-        <Button
-          color="blue"
-          icon={<HiPlus />}
-          size="sm"
-          className="mt-2"
-          fullWidth
-          onClick={toggleProductVar}
+          onClick={() => {}}
         >
           Choose Product Variants
         </Button>
         <Button type="submit" size="sm" className="mt-10" fullWidth>
-          Done
+          {FormMode[mode].button}
         </Button>
       </form>
       {showChooseForm && (
         <ChooseIngredients
-          setProductData={setProductData}
+          setProductData={setFormData}
           isOpen={showChooseForm}
           toggle={toggleChooseForm}
         />
       )}
       {showProductVar && (
-        <ChooseProductVariants
-          setProductData={setProductData}
+        <ProductsVariantModal
           isOpen={showProductVar}
           toggle={toggleProductVar}
+          setProductData={setFormData}
+          setSelectedRows={setSelectedRows}
+          selectedRows={selectedRows}
         />
       )}
     </Modal>

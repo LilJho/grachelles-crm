@@ -6,10 +6,7 @@ import {
   Collections,
   ProductsResponse,
 } from "types/pocketbase-types";
-import Modal from "@/components/UI/Modal/Modal";
 import useToggle from "hooks/useToggle";
-import AddProductCard from "@/components/screens/product/AddProductCard";
-import DataList from "@/components/screens/product/DataList";
 import PageTitle from "@/components/UI/PageTitle";
 import SelectField from "@/components/UI/Selects/SelectField";
 import ProductsTable from "@/components/screens/products/ProductsTable";
@@ -17,32 +14,10 @@ import { IExpandedProductResponse } from "types/global-types";
 import Button from "@/components/UI/Buttons/Button";
 import { HiPlus } from "react-icons/hi";
 import AddProductForm from "@/components/screens/products/ProductForm/AddProductForm";
-
-interface Product {
-  id: number;
-  parent_name: string;
-  category: {};
-  product_type: string;
-  branch: {};
-  expand: BranchCategory;
-}
-
-interface BranchCategory {
-  branch: {
-    name: string;
-  };
-  category: {
-    name: string;
-  };
-}
+import useSelectBranch from "hooks/useSelectBranch";
+import SelectBranch from "@/components/UI/SelectBranch";
 
 const ProductsPage = () => {
-  const { data: BranchData, isLoading: BranchLoading } =
-    useFetchData<BranchesResponse>({
-      collectionName: Collections.Branches,
-    });
-  const [selectBranch, setSelectBranch] = useState(BranchData?.[0]);
-
   const { data: ProductsData, isLoading: ProductLoading } =
     useFetchData<ProductsResponse>({
       collectionName: Collections.Products,
@@ -50,16 +25,21 @@ const ProductsPage = () => {
     });
 
   const [showAddForm, toggleAddForm] = useToggle();
+
+  const { filterData, selectBranch, setSelectBranch, BranchesData } =
+    useSelectBranch();
+
+  const filteredStockData = filterData(
+    ProductsData,
+    (item: { branch: string }) => item.branch === selectBranch?.id
+  );
   return (
     <MainLayout>
       <PageTitle title="Products Record">
         <div className="flex items-center flex-1 max-w-sm gap-6">
-          <SelectField
-            size="sm"
-            fullWidth
-            data={BranchData}
-            objKey="name"
-            value={selectBranch}
+          <SelectBranch
+            data={BranchesData as BranchesResponse[]}
+            selectBranch={selectBranch as BranchesResponse}
             onChange={(e) => setSelectBranch(e)}
           />
           <Button
@@ -74,7 +54,7 @@ const ProductsPage = () => {
       </PageTitle>
       <div className="mt-10">
         <ProductsTable
-          data={ProductsData as IExpandedProductResponse[]}
+          data={filteredStockData as IExpandedProductResponse[]}
           isLoading={ProductLoading}
         />
       </div>

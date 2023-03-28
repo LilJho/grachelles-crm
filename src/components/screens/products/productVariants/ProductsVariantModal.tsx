@@ -2,19 +2,44 @@ import Button from "@/components/UI/Buttons/Button";
 import Label from "@/components/UI/Inputs/Label";
 import SearchField from "@/components/UI/Inputs/SearchField";
 import Modal from "@/components/UI/Modal/Modal";
+import { handleSelectAll, handleSelectData } from "helper/checkBoxSelect";
+import { searchFilter } from "helper/searchFilter";
+import useDebounce from "hooks/useDebounce";
 import useFetchData from "hooks/useFetchData";
-import React from "react";
+import React, { useState } from "react";
 import { Collections } from "types/pocketbase-types";
 
 interface IModal {
   isOpen: boolean;
-  toggle: () => {};
+  toggle: () => void;
+  setProductData: (product: any) => void;
+  setSelectedRows: (row: any) => void;
+  selectedRows: any[];
 }
 
-const ProductsVariantModal = ({ isOpen, toggle }: IModal) => {
+const ProductsVariantModal = ({
+  isOpen,
+  toggle,
+  setProductData,
+  selectedRows,
+  setSelectedRows,
+}: IModal) => {
   const { data: variantsData, isLoading: variantsLoading } = useFetchData({
     collectionName: Collections.ProductVariants,
   });
+
+  const [query, setQuery] = useState("");
+  const debouncedValue = useDebounce<string>(query, 500);
+
+  const filteredVariants = searchFilter(variantsData, debouncedValue);
+
+  const handleSaveSelection = () => {
+    setProductData((prev: any) => ({
+      ...prev,
+      product_variants: selectedRows.map((val: { id: string }) => val.id),
+    }));
+    toggle();
+  };
 
   return (
     <Modal
@@ -31,42 +56,60 @@ const ProductsVariantModal = ({ isOpen, toggle }: IModal) => {
             size="sm"
             fullWidth
             placeholder="Search Product Variant"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
           <Button size="sm" variant="light" color="blue">
             New Variant
           </Button>
         </div>
-        <div className="border border-gray-300 rounded-md min-h-[200px] max-h-96 overflow-auto py-1">
-          {variantsData?.map((val) => {
-            return (
-              <label
-                key={val.id}
-                className="flex gap-6 items-center px-4 py-2 border-b border-gray-300 last:border-b-0 text-sm cursor-pointer"
-              >
-                <input
-                  className="w-5 h-5 border-gray-200 rounded-md cursor-pointer checked:bg-primary-600"
-                  type="checkbox"
-                  //   onChange={onChange}
-                  //   value={value}
-                  //   checked={checked}
-                />
-                <span>{val.name}</span>
-              </label>
-            );
-          })}
-          {/* <h5 className="font-semibold text-center text-gray-400">
-            No product variants available
-          </h5> */}
+        <label className="flex items-center justify-end gap-2 -mb-2 max-w-max ml-auto cursor-pointer">
+          <input
+            className="w-5 h-5 border-gray-200 rounded-md cursor-pointer checked:bg-primary-600"
+            type="checkbox"
+            checked={selectedRows?.length === filteredVariants.length}
+            onChange={() =>
+              handleSelectAll(filteredVariants as any, setSelectedRows)
+            }
+          />
+          <span>Select All</span>
+        </label>
+        <div className="border border-gray-300 rounded-md min-h-[200px] max-h-96 overflow-auto py-1 relative flex flex-col">
+          {filteredVariants.length ? (
+            filteredVariants?.map((val: any) => {
+              return (
+                <label
+                  key={val.id as any}
+                  className="flex gap-6 items-center px-4 py-2 border-b border-gray-300 last:border-b-0 text-sm cursor-pointer"
+                >
+                  <input
+                    className="w-5 h-5 border-gray-200 rounded-md cursor-pointer checked:bg-primary-600"
+                    type="checkbox"
+                    checked={(selectedRows as any)?.includes(val)}
+                    onChange={() => handleSelectData(val, setSelectedRows)}
+                  />
+
+                  <span className="capitalize">{`${val.category}${
+                    val.parent_name ? " - " + val.parent_name : ""
+                  }${val.name ? " - " + val.name : ""}${
+                    val.size ? " - " + val.size : ""
+                  }${val.type ? " - " + val.type : ""}`}</span>
+                </label>
+              );
+            })
+          ) : (
+            <div className="flex-1 my-auto font-semibold text-center text-gray-400 flex items-center justify-center">
+              <h4>No product variants available</h4>
+            </div>
+          )}
         </div>
-        <div>
-          <Label>Selected</Label>
-          <div className="text-sm">No selected records</div>
-        </div>
-        <div className="mt-4 flex justify-between border-t border-gray-300 pt-6">
-          <Button size="sm" color="gray" variant="light">
+        <div className="mt-4 flex justify-between border-gray-300">
+          <Button size="sm" color="gray" variant="light" onClick={toggle}>
             Cancel
           </Button>
-          <Button size="sm">Save Selection</Button>
+          <Button size="sm" onClick={handleSaveSelection}>
+            Save Selection
+          </Button>
         </div>
       </div>
     </Modal>
