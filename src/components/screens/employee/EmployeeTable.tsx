@@ -5,8 +5,11 @@ import Pagination from "@/components/UI/Pagination";
 import Table, { TableColumn, TableRow } from "@/components/UI/Table/Table";
 import useDeleteProduct from "hooks/useDeleteRecord";
 import useTableHook from "hooks/useTableHook";
+import useToggle from "hooks/useToggle";
 import React from "react";
 import { Collections, EmployeeResponse } from "types/pocketbase-types";
+import EditEmployee from "./EmployeeForm/EditEmployeeData";
+import dayjs from "dayjs";
 
 interface IEmployeeProps {
   data: EmployeeResponse[];
@@ -33,7 +36,13 @@ const EmployeeTable = ({ data, isLoading }: IEmployeeProps) => {
     getData,
     setGetData,
     handleSubmitDeleteData,
-  } = useDeleteProduct(Collections.Branches);
+  } = useDeleteProduct(Collections.Employee);
+
+  const [showEditForm, toggleEditForm] = useToggle();
+  const handleGetData = (val: any) => {
+    toggleEditForm();
+    setGetData(val);
+  };
 
   return (
     <>
@@ -42,10 +51,17 @@ const EmployeeTable = ({ data, isLoading }: IEmployeeProps) => {
         setShowCount={setShowCount}
         query={query}
         setQuery={setQuery}
-        label="Expenses List"
+        label="Employee List"
       >
         <Table
-          header={["Branch Name", "Actions", "Contact", "Address", "Actions"]}
+          header={[
+            "Employee Name",
+            "Gender",
+            "Birth Day",
+            "Contact",
+            "Address",
+            "Actions",
+          ]}
           data={currentItems}
           query={query}
           isLoading={isLoading}
@@ -55,14 +71,14 @@ const EmployeeTable = ({ data, isLoading }: IEmployeeProps) => {
               <TableRow key={val.id}>
                 <TableColumn>{val.name}</TableColumn>
                 <TableColumn>{val.gender}</TableColumn>
+                <TableColumn>
+                  {dayjs(val.birthday, "YYYY-MM-DD").format("MMM DD, YYYY")}
+                </TableColumn>
                 <TableColumn>{val.contact}</TableColumn>
                 <TableColumn>{val.address}</TableColumn>
                 <TableColumn>
                   <div className="flex items-center gap-4">
-                    <Button
-                      size="xs"
-                      //   onClick={() => handleGetDeleteData(val)}
-                    >
+                    <Button size="xs" onClick={() => handleGetData(val)}>
                       Edit
                     </Button>
                     <Button
@@ -87,13 +103,13 @@ const EmployeeTable = ({ data, isLoading }: IEmployeeProps) => {
           forcePage={pageNumber}
         />
       </DisplayContainer>
-      {/* {showEditForm && (
-        <EditInventory
+      {showEditForm && (
+        <EditEmployee
           isOpen={showEditForm}
           toggle={toggleEditForm}
-          initialValue={getData as any}
+          initialValues={getData as any}
         />
-      )}*/}
+      )}
       {showDelete && (
         <DeleteModal
           isOpen={showDelete}

@@ -1,26 +1,35 @@
 import useCreateData from "hooks/useCreateData";
 import React, { useState } from "react";
 import { Collections } from "types/pocketbase-types";
-import BranchForm from "./BranchForm";
+import EmployeeForm from "./EmployeeForm";
 
-interface IBrachFormProps {
+interface IEmployeeFormProps {
   isOpen: boolean;
   toggle: () => void;
 }
 
-const AddBranchForm = ({ isOpen, toggle }: IBrachFormProps) => {
-  const [formData, setFormData] = useState({ name: "" });
+const AddEmployee = ({ isOpen, toggle }: IEmployeeFormProps) => {
+  const defaultValue = {
+    name: "",
+    gender: "Male",
+    birthday: "",
+    contact: "",
+    address: "",
+  };
+
+  const [formData, setFormData] = useState(defaultValue);
+  console.log({ formData });
 
   const handleFormSubmit = useCreateData({
-    Collections: Collections.Branches,
+    Collections: Collections.Employee,
     data: formData,
     toggle,
     setFormData,
-    defaultValue: { name: "" },
+    defaultValue: defaultValue,
   });
 
   return (
-    <BranchForm
+    <EmployeeForm
       isOpen={isOpen}
       toggle={toggle}
       formData={formData}
@@ -31,4 +40,4 @@ const AddBranchForm = ({ isOpen, toggle }: IBrachFormProps) => {
   );
 };
 
-export default AddBranchForm;
+export default AddEmployee;
