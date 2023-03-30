@@ -72,7 +72,7 @@ const ProductsVariantModal = ({
             New Variant
           </Button>
         </div>
-        <label className="flex items-center justify-end gap-2 -mb-2 max-w-max ml-auto cursor-pointer">
+        <label className="flex items-center justify-end gap-2 ml-auto -mb-2 cursor-pointer max-w-max">
           <input
             className="w-5 h-5 border-gray-200 rounded-md cursor-pointer checked:bg-primary-600"
             type="checkbox"
@@ -89,7 +89,7 @@ const ProductsVariantModal = ({
               return (
                 <label
                   key={val.id as any}
-                  className="flex gap-6 items-center px-4 py-2 border-b border-gray-300 last:border-b-0 text-sm cursor-pointer"
+                  className="flex items-center gap-6 px-4 py-2 text-sm border-b border-gray-300 cursor-pointer last:border-b-0"
                 >
                   <input
                     className="w-5 h-5 border-gray-200 rounded-md cursor-pointer checked:bg-primary-600"
@@ -109,12 +109,12 @@ const ProductsVariantModal = ({
               );
             })
           ) : (
-            <div className="flex-1 my-auto font-semibold text-center text-gray-400 flex items-center justify-center">
+            <div className="flex items-center justify-center flex-1 my-auto font-semibold text-center text-gray-400">
               <h4>No product variants available</h4>
             </div>
           )}
         </div>
-        <div className="mt-4 flex justify-between border-gray-300">
+        <div className="flex justify-between mt-4 border-gray-300">
           <Button size="sm" color="gray" variant="light" onClick={toggle}>
             Cancel
           </Button>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import useFetchData from "hooks/useFetchData";
 import { Collections } from "types/pocketbase-types";
 import Modal from "@/components/UI/Modal/Modal";
@@ -7,6 +7,7 @@ import TextField from "@/components/UI/Inputs/TextField";
 import Button from "@/components/UI/Buttons/Button";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { pb } from "lib/database/pocketbase";
+import { ChangeEvent } from "react";
 
 interface ProductData {
   name: string;
@@ -58,13 +59,16 @@ const ChooseIngredients = ({ isOpen, toggle, setProductData }: IModal) => {
     return <h1>Loading...</h1>;
   }
 
-  const handleChange = (index, event) => {
+  const handleChange = (
+    index: number,
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
     let data = [...baseIngredients];
-    data[index][event.target.name] = event.target.value;
+    data[index].quantity = parseInt(event.target.value);
     setBaseIngredients(data);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // const data = {
@@ -97,13 +101,13 @@ const ChooseIngredients = ({ isOpen, toggle, setProductData }: IModal) => {
         id: "",
         name: "",
       },
-      quantity: "",
+      quantity: 0,
     };
 
     setBaseIngredients([...baseIngredients, newfield]);
   };
 
-  const removeFields = (index) => {
+  const removeFields = (index: number) => {
     let data = [...baseIngredients];
     data.splice(index, 1);
     setBaseIngredients(data);
@@ -121,7 +125,6 @@ const ChooseIngredients = ({ isOpen, toggle, setProductData }: IModal) => {
           return (
             <div className="flex gap-2 py-2" key={index}>
               <ComboBox
-                name="stock"
                 data={Stocks}
                 objKey="name"
                 label="Stock"
@@ -136,7 +139,6 @@ const ChooseIngredients = ({ isOpen, toggle, setProductData }: IModal) => {
               />
               <div className="flex gap-2">
                 <TextField
-                  name="quantity"
                   value={baseIngredients.quantity}
                   label="Quantity"
                   size="sm"

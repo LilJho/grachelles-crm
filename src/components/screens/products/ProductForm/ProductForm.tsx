@@ -113,10 +113,10 @@ const ProductForm = ({
             required
           />
         </div>
-        <div className="flex flex-col p-3 border border-gray-300 rounded-md text-sm">
+        <div className="flex flex-col p-3 text-sm border border-gray-300 rounded-md">
           <Label>Product Variants</Label>
           <div className="py-4 my-2 border-t border-b border-gray-300">
-            <h6 className="text-gray-400 font-semibold text-center">
+            <h6 className="font-semibold text-center text-gray-400">
               {formData?.product_variants.length ? (
                 <span className="text-primary-500">
                   {formData?.product_variants.length} products has been selected
