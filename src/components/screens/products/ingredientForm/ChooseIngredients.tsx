@@ -9,23 +9,8 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { pb } from "lib/database/pocketbase";
 import { ChangeEvent } from "react";
 
-interface ProductData {
-  name: string;
-  type: string;
-  category: {
-    id: string;
-    name: string;
-  };
-  branch: {
-    id: string;
-    name: string;
-  };
-  baseIngredient: number[];
-  productVariant: string;
-}
-
 interface IModal {
-  setProductData: (prev: ProductData) => void;
+  setProductData: (prev: any) => void;
   isOpen: boolean;
   toggle: () => void;
 }
@@ -54,10 +39,6 @@ const ChooseIngredients = ({ isOpen, toggle, setProductData }: IModal) => {
   const { data: Stocks, isLoading: StocksIsLoading } = useFetchData({
     collectionName: Collections.Stocks,
   });
-
-  if (StocksIsLoading) {
-    return <h1>Loading...</h1>;
-  }
 
   const handleChange = (
     index: number,
@@ -91,7 +72,10 @@ const ChooseIngredients = ({ isOpen, toggle, setProductData }: IModal) => {
 
     const ingredientID = await record.map((ingredient) => ingredient.id);
     console.log(ingredientID);
-    setProductData((prev) => ({ ...prev, baseIngredient: ingredientID }));
+    setProductData((prev: any) => ({
+      ...prev,
+      base_ingredients: ingredientID,
+    }));
     toggle();
   };
 
@@ -117,46 +101,53 @@ const ChooseIngredients = ({ isOpen, toggle, setProductData }: IModal) => {
     <Modal
       isOpen={isOpen}
       toggle={toggle}
-      title={"Choose Base-Ingredients"}
+      title={"Add Base-Ingredients"}
       closeButton
     >
       <form onSubmit={handleSubmit}>
-        {baseIngredients.map((ingredient, index) => {
-          return (
-            <div className="flex gap-2 py-2" key={index}>
-              <ComboBox
-                data={Stocks}
-                objKey="name"
-                label="Stock"
-                size="sm"
-                fullWidth
-                value={baseIngredients[index].stock}
-                onChange={(value) => {
-                  let data = [...baseIngredients];
-                  data[index].stock = { id: value.id, name: value.name };
-                  setBaseIngredients(data);
-                }}
-              />
-              <div className="flex gap-2">
-                <TextField
-                  value={baseIngredients.quantity}
-                  label="Quantity"
+        {StocksIsLoading ? (
+          <div className="flex items-center justify-center flex-1 my-auto font-semibold text-center text-gray-400">
+            <h4>No product variants available</h4>
+          </div>
+        ) : (
+          baseIngredients.map((ingredient, index) => {
+            return (
+              <div className="flex gap-2 py-2" key={index}>
+                <ComboBox
+                  data={Stocks}
+                  objKey="name"
+                  label="Ingredient name"
                   size="sm"
                   fullWidth
-                  onChange={(e) => handleChange(index, e)}
+                  value={baseIngredients[index].stock}
+                  onChange={(value) => {
+                    let data = [...baseIngredients];
+                    data[index].stock = { id: value.id, name: value.name };
+                    setBaseIngredients(data);
+                  }}
                 />
-                <Button
-                  onClick={() => removeFields(index)}
-                  color="red"
-                  size="sm"
-                  className="mt-2"
-                >
-                  <FaRegTrashAlt />
-                </Button>
+                <div className="flex gap-2">
+                  <TextField
+                    value={baseIngredients[index].quantity}
+                    label="Quantity"
+                    size="sm"
+                    fullWidth
+                    onChange={(e) => handleChange(index, e)}
+                  />
+                  <div className="flex flex-col justify-end">
+                    <Button
+                      onClick={() => removeFields(index)}
+                      color="red"
+                      size="sm"
+                    >
+                      <FaRegTrashAlt />
+                    </Button>
+                  </div>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })
+        )}
         <div className="flex flex-col">
           <Button onClick={addField} color="green" size="sm" className="mt-2">
             Add More

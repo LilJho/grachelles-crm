@@ -22,16 +22,17 @@ const AddProductForm = ({ isOpen, toggle, currentBranch }: IFormProps) => {
       name: "",
     },
     branch: currentBranch,
-    base_ingredient: [],
+    base_ingredients: [],
     product_variants: [],
   };
 
   const [formData, setFormData] = useState(defaultValue);
-  console.log({
-    ...formData,
-    branch: formData.branch.id,
-    category: formData.category.id,
-  });
+  // console.log({
+  //   ...formData,
+  //   branch: formData.branch.id,
+  //   category: formData.category.id,
+  // });
+  console.log(formData);
 
   const handleFormSubmit = useCreateData({
     Collections: Collections.Products,

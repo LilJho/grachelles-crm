@@ -136,6 +136,30 @@ const ProductForm = ({
             Add Product Variant
           </Button>
         </div>
+
+        <div className="flex flex-col p-3 text-sm border border-gray-300 rounded-md">
+          <Label>Base Ingredients</Label>
+          <div className="py-4 my-2 border-t border-b border-gray-300">
+            <h6 className="font-semibold text-center text-gray-400">
+              {formData?.base_ingredients.length ? (
+                <span className="text-primary-500">
+                  {formData?.base_ingredients.length} base ingredients
+                </span>
+              ) : (
+                "No base ingredients"
+              )}
+            </h6>
+          </div>
+          <Button
+            color="blue"
+            icon={<HiPlus />}
+            size="sm"
+            fullWidth
+            onClick={toggleChooseForm}
+          >
+            Add Base Ingredients
+          </Button>
+        </div>
         {/* <Button
           color="blue"
           icon={<HiPlus />}
